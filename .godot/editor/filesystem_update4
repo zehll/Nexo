@@ -1,5 +1,4 @@
-res://Exibidor/ItemEmExibicao/ItemEmExibicao.tscn
-res://Exibidor/ItemEmExibicao/ItemEmExibicao.gd
-res://Exibidor/Exibidor.tscn
-res://Exibidor/Exibidor.gd
+res://Margens/Margens.tscn
 res://Principal/Principal.tscn
+res://Margens/Margens.gd
+res://Exibidor/Exibidor.gd

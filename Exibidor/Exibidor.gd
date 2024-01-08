@@ -23,6 +23,11 @@ const DesaceleracaoDoZoom: float = 0.04
 func _ready() -> void:
 	self.mouse_entered.connect(Mouse.localizar.bind(self))
 	self.mouse_exited.connect(Mouse.localizar.bind(Mouse))
+	get_viewport().size_changed.connect(_atualizar_tamanho)
+
+# ATUALIZAR TAMANHO
+func _atualizar_tamanho() -> void:
+	self.size = Vector2(float(get_window().size.x),float(get_window().size.y))
 
 # PROCESSO CONTÍNUO
 func _physics_process(delta: float) -> void:

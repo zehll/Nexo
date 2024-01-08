@@ -1,3 +1,12 @@
-[gd_scene format=3 uid="uid://bsuxlr3lsbet7"]
+[gd_scene load_steps=3 format=3 uid="uid://bsuxlr3lsbet7"]
+
+[ext_resource type="PackedScene" uid="uid://dn6xelfw0mhp7" path="res://Exibidor/Exibidor.tscn" id="1_2i5fx"]
+[ext_resource type="PackedScene" uid="uid://bw5oo2dmxftd" path="res://Margens/Margens.tscn" id="2_xv1ar"]
 
 [node name="Principal" type="Node2D"]
+
+[node name="Exibidor" parent="." instance=ExtResource("1_2i5fx")]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Margens" parent="." instance=ExtResource("2_xv1ar")]

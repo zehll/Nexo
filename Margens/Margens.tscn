@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw5oo2dmxftd"]
+
+[ext_resource type="Script" path="res://Margens/Margens.gd" id="1_kdueb"]
+
+[node name="Margens" type="Node2D"]
+script = ExtResource("1_kdueb")
+
+[node name="CantoSuperiorEsquerdo" type="ColorRect" parent="."]
+offset_right = 3.0
+offset_bottom = 3.0
+mouse_default_cursor_shape = 12
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="FaixaSuperior" type="ColorRect" parent="."]
+offset_left = 3.0
+offset_right = 1149.0
+offset_bottom = 3.0
+mouse_default_cursor_shape = 9
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="CantoSuperiorDireito" type="ColorRect" parent="."]
+offset_left = 1149.0
+offset_right = 1152.0
+offset_bottom = 3.0
+mouse_default_cursor_shape = 11
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="FaixaEsquerda" type="ColorRect" parent="."]
+offset_top = 3.0
+offset_right = 3.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 10
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="FaixaDireita" type="ColorRect" parent="."]
+offset_left = 1149.0
+offset_top = 3.0
+offset_right = 1152.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 10
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="CantoInferiorEsquerdo" type="ColorRect" parent="."]
+offset_top = 645.0
+offset_right = 3.0
+offset_bottom = 648.0
+mouse_default_cursor_shape = 11
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="FaixaInferior" type="ColorRect" parent="."]
+offset_left = 3.0
+offset_top = 645.0
+offset_right = 1149.0
+offset_bottom = 648.0
+mouse_default_cursor_shape = 9
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="CantoInferiorDireito" type="ColorRect" parent="."]
+offset_left = 1149.0
+offset_top = 645.0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_default_cursor_shape = 12
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Barra" type="ColorRect" parent="."]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 1149.0
+offset_bottom = 30.0
+color = Color(0.2, 0.2, 0.2, 1)
