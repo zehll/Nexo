@@ -1,0 +1,147 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctos00ghjtpsc"]
+
+[ext_resource type="Script" path="res://ListaDeImagens/ListaDeImagens.gd" id="1_gh4xm"]
+[ext_resource type="Texture2D" uid="uid://bkap82yfxh37r" path="res://Icones/TresSetas.png" id="2_8u4vg"]
+[ext_resource type="Texture2D" uid="uid://dqhn1dl4wht44" path="res://Icones/DuasSetas.png" id="3_7qn1k"]
+[ext_resource type="Texture2D" uid="uid://kxoqbb3jvou1" path="res://Icones/UmaSeta.png" id="4_vs73l"]
+
+[node name="ListaDeImagens" type="Node2D"]
+script = ExtResource("1_gh4xm")
+
+[node name="Margem" type="ColorRect" parent="."]
+offset_left = 300.0
+offset_top = 30.0
+offset_right = 303.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 10
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Fundo" type="ColorRect" parent="."]
+offset_left = 3.0
+offset_top = 30.0
+offset_right = 300.0
+offset_bottom = 645.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Lista" type="VBoxContainer" parent="Fundo"]
+layout_mode = 0
+offset_right = 297.0
+offset_bottom = 615.0
+mouse_filter = 2
+
+[node name="EsquerdaTres" type="ColorRect" parent="."]
+offset_left = 3.0
+offset_top = 615.0
+offset_right = 33.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="EsquerdaTres"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+texture = ExtResource("2_8u4vg")
+expand_mode = 1
+
+[node name="EsquerdaDois" type="ColorRect" parent="."]
+offset_left = 36.0
+offset_top = 615.0
+offset_right = 66.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="EsquerdaDois"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+texture = ExtResource("3_7qn1k")
+expand_mode = 1
+
+[node name="EsquerdaUm" type="ColorRect" parent="."]
+offset_left = 69.0
+offset_top = 615.0
+offset_right = 99.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="EsquerdaUm"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+texture = ExtResource("4_vs73l")
+expand_mode = 1
+
+[node name="DireitaUm" type="ColorRect" parent="."]
+offset_left = 204.0
+offset_top = 615.0
+offset_right = 234.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="DireitaUm"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+texture = ExtResource("4_vs73l")
+expand_mode = 1
+flip_h = true
+
+[node name="DireitaDois" type="ColorRect" parent="."]
+offset_left = 237.0
+offset_top = 615.0
+offset_right = 267.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="DireitaDois"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+texture = ExtResource("3_7qn1k")
+expand_mode = 1
+flip_h = true
+
+[node name="DireitaTres" type="ColorRect" parent="."]
+offset_left = 270.0
+offset_top = 615.0
+offset_right = 300.0
+offset_bottom = 645.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="DireitaTres"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+texture = ExtResource("2_8u4vg")
+expand_mode = 1
+flip_h = true

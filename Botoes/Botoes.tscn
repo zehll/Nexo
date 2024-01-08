@@ -1,0 +1,397 @@
+[gd_scene load_steps=23 format=3 uid="uid://do1ofef1omkap"]
+
+[ext_resource type="Script" path="res://Botoes/Botoes.gd" id="1_cyiyb"]
+[ext_resource type="Texture2D" uid="uid://djhvovqvi7dj" path="res://Icones/Novo.png" id="1_paanm"]
+[ext_resource type="Texture2D" uid="uid://dkdjb6ywn64vq" path="res://Icones/Abrir.png" id="2_mnuai"]
+[ext_resource type="Texture2D" uid="uid://tahxo75mc0pk" path="res://Icones/Salvar.png" id="3_c0bab"]
+[ext_resource type="Texture2D" uid="uid://dnfub60ri3dgh" path="res://Icones/Imagem.png" id="4_lykp4"]
+[ext_resource type="Texture2D" uid="uid://npwsqyj1em7a" path="res://Icones/Voltar.png" id="5_77rdh"]
+[ext_resource type="Texture2D" uid="uid://kxoqbb3jvou1" path="res://Icones/UmaSeta.png" id="6_6i7ke"]
+[ext_resource type="Texture2D" uid="uid://y0vx72v64qhf" path="res://Icones/Sorteio.png" id="7_4hvtd"]
+[ext_resource type="Texture2D" uid="uid://dhngwi416vnwt" path="res://Icones/Adicionar.png" id="8_16vit"]
+[ext_resource type="FontFile" uid="uid://pcy2ihee5wsd" path="res://Fontes/RobotoSlabPequena.ttf" id="9_s8rma"]
+[ext_resource type="Texture2D" uid="uid://4qrwkjqmor6s" path="res://Icones/Ambos.png" id="10_o6484"]
+[ext_resource type="Texture2D" uid="uid://cx37s3gb2gnri" path="res://Icones/Buscar.png" id="10_xw5wf"]
+[ext_resource type="Texture2D" uid="uid://bfmx33qrtp8gw" path="res://Icones/Marcados.png" id="11_1ktrn"]
+[ext_resource type="StyleBox" uid="uid://coofeg4688ju8" path="res://Recursos/Digitacao.tres" id="11_x75o5"]
+[ext_resource type="FontFile" uid="uid://bfeb10cfhq5f7" path="res://Fontes/RobotoSlabGrande.ttf" id="12_7jx6e"]
+[ext_resource type="Texture2D" uid="uid://dgembbm6grvk8" path="res://Icones/Desmarcados.png" id="12_x8rnh"]
+[ext_resource type="Texture2D" uid="uid://bdvfy3lwyexr0" path="res://Icones/TelaCheia.png" id="17_05s6r"]
+[ext_resource type="Texture2D" uid="uid://crb0ebwbjfcdt" path="res://Icones/Minimizar.png" id="18_0p6y8"]
+[ext_resource type="Texture2D" uid="uid://028sohk8e63v" path="res://Icones/Maximizar.png" id="19_6uwyn"]
+[ext_resource type="Texture2D" uid="uid://cn8jgigewwidm" path="res://Icones/Fechar.png" id="20_1ttwr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_842i4"]
+font = ExtResource("9_s8rma")
+font_size = 13
+font_color = Color(0.4, 0.4, 0.4, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u36c8"]
+font = ExtResource("12_7jx6e")
+font_size = 15
+font_color = Color(0.4, 0.4, 0.4, 1)
+
+[node name="Botoes" type="Node2D"]
+script = ExtResource("1_cyiyb")
+
+[node name="Novo" type="ColorRect" parent="."]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 27.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Novo"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("1_paanm")
+expand_mode = 1
+
+[node name="Abrir" type="ColorRect" parent="."]
+offset_left = 30.0
+offset_top = 3.0
+offset_right = 54.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Abrir"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("2_mnuai")
+expand_mode = 1
+
+[node name="Salvar" type="ColorRect" parent="."]
+offset_left = 57.0
+offset_top = 3.0
+offset_right = 81.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Salvar"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("3_c0bab")
+expand_mode = 1
+
+[node name="Modo" type="ColorRect" parent="."]
+offset_left = 84.0
+offset_top = 3.0
+offset_right = 108.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Modo"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("4_lykp4")
+expand_mode = 1
+
+[node name="Voltar" type="ColorRect" parent="."]
+offset_left = 111.0
+offset_top = 3.0
+offset_right = 135.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Voltar"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("5_77rdh")
+expand_mode = 1
+
+[node name="Esquerda" type="ColorRect" parent="."]
+offset_left = 138.0
+offset_top = 3.0
+offset_right = 162.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Esquerda"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("6_6i7ke")
+expand_mode = 1
+
+[node name="Direita" type="ColorRect" parent="."]
+offset_left = 165.0
+offset_top = 3.0
+offset_right = 189.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Direita"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("6_6i7ke")
+expand_mode = 1
+flip_h = true
+
+[node name="Sorteio" type="ColorRect" parent="."]
+offset_left = 192.0
+offset_top = 3.0
+offset_right = 216.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Sorteio"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("7_4hvtd")
+expand_mode = 1
+flip_h = true
+
+[node name="Adicionar" type="ColorRect" parent="."]
+offset_left = 219.0
+offset_top = 3.0
+offset_right = 243.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Adicionar"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("8_16vit")
+expand_mode = 1
+flip_h = true
+
+[node name="Visualizacao" type="ColorRect" parent="."]
+offset_left = 246.0
+offset_top = 3.0
+offset_right = 308.0
+offset_bottom = 27.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Ambos" type="TextureRect" parent="Visualizacao"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("10_o6484")
+expand_mode = 1
+
+[node name="Marcados" type="TextureRect" parent="Visualizacao"]
+self_modulate = Color(0.1, 0.1, 0.1, 1)
+layout_mode = 0
+offset_left = 24.0
+offset_top = 5.0
+offset_right = 38.0
+offset_bottom = 19.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("11_1ktrn")
+expand_mode = 1
+
+[node name="Desmarcados" type="TextureRect" parent="Visualizacao"]
+self_modulate = Color(0.1, 0.1, 0.1, 1)
+layout_mode = 0
+offset_left = 43.0
+offset_top = 5.0
+offset_right = 57.0
+offset_bottom = 19.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("12_x8rnh")
+expand_mode = 1
+
+[node name="Zoom" type="ColorRect" parent="."]
+offset_left = 311.0
+offset_top = 3.0
+offset_right = 359.0
+offset_bottom = 27.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Texto" type="Label" parent="Zoom"]
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 24.0
+text = "100%"
+label_settings = SubResource("LabelSettings_842i4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Busca" type="ColorRect" parent="."]
+offset_left = 362.0
+offset_top = 3.0
+offset_right = 558.0
+offset_bottom = 27.0
+color = Color(0, 0, 0, 1)
+
+[node name="Digitacao" type="LineEdit" parent="Busca"]
+layout_mode = 0
+offset_left = 4.0
+offset_right = 170.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_placeholder_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_fonts/font = ExtResource("9_s8rma")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = ExtResource("11_x75o5")
+theme_override_styles/focus = ExtResource("11_x75o5")
+theme_override_styles/read_only = ExtResource("11_x75o5")
+placeholder_text = "Buscar"
+caret_blink = true
+
+[node name="Icone" type="TextureRect" parent="Busca"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 177.0
+offset_top = 5.0
+offset_right = 191.0
+offset_bottom = 19.0
+texture = ExtResource("10_xw5wf")
+expand_mode = 1
+
+[node name="Titulo" type="ColorRect" parent="."]
+offset_left = 561.0
+offset_top = 3.0
+offset_right = 1041.0
+offset_bottom = 27.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Texto" type="Label" parent="Titulo"]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 24.0
+text = "Nexo"
+label_settings = SubResource("LabelSettings_u36c8")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="TelaCheia" type="ColorRect" parent="."]
+offset_left = 1044.0
+offset_top = 3.0
+offset_right = 1068.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="TelaCheia"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("17_05s6r")
+expand_mode = 1
+
+[node name="Minimizar" type="ColorRect" parent="."]
+offset_left = 1071.0
+offset_top = 3.0
+offset_right = 1095.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Minimizar"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("18_0p6y8")
+expand_mode = 1
+
+[node name="Maximizar" type="ColorRect" parent="."]
+offset_left = 1098.0
+offset_top = 3.0
+offset_right = 1122.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Maximizar"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("19_6uwyn")
+expand_mode = 1
+
+[node name="Sair" type="ColorRect" parent="."]
+offset_left = 1125.0
+offset_top = 3.0
+offset_right = 1149.0
+offset_bottom = 27.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Sair"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = ExtResource("20_1ttwr")
+expand_mode = 1

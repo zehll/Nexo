@@ -13,7 +13,7 @@ class_name CMargens
 @onready var Barra: ColorRect = $Barra
 
 # CONSTANTES
-const TamanhoMinimo: Vector2i = Vector2i(300,300)
+const TamanhoMinimo: Vector2i = Vector2i(730,200)
 
 # VARIÁVEIS
 @onready var Movimentacao: Vector2i = Vector2i(0,0)
