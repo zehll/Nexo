@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cltaxvc6wb803"]
+
+[ext_resource type="Script" path="res://Exibidor/ItemEmExibicao/ItemEmExibicao.gd" id="1_n6ths"]
+
+[node name="ItemEmExibicao" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_n6ths")
+
+[node name="Imagem" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+expand_mode = 1

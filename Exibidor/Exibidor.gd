@@ -1,7 +1,10 @@
 extends Control
+class_name CExibidor
 
 # ELEMENTOS DA CENA
 @onready var Origem: Marker2D = $Origem
+@onready var Tabela: GridContainer = $Origem/Tabela
+@onready var ItemEmExibicao: PackedScene = preload("res://Exibidor/ItemEmExibicao/ItemEmExibicao.tscn")
 
 # INFORMAÇÕES
 const Velocidade: float = 400.0
@@ -83,5 +86,71 @@ func _zoom(intensidade: float, delta: float) -> void:
 			var limite_inferior: bool = Origem.global_position.y + ((Tamanho.y * escala_pretendida.y) / 2.0) > 30.0
 			var limite_esquerdo: bool = Origem.global_position.x - ((Tamanho.x * escala_pretendida.x) / 2.0) < self.size.x - 30.0
 			var limite_direito: bool = Origem.global_position.x + ((Tamanho.x * escala_pretendida.x) / 2.0) > 30.0
-			if limite_superior and limite_inferior and limite_esquerdo and limite_direito: Origem.scale = escala_pretendida
+			if limite_superior and limite_inferior and limite_esquerdo and limite_direito:
+				Origem.scale = Vector2(max(0.05,escala_pretendida.x),max(0.05,escala_pretendida.y))
 			else: ZoomNormalizado = 0.0
+
+# ADICIONAR
+func adicionar(arquivo: String, resetar: bool = false) -> void:
+	if resetar:
+		for item in Tabela.get_children():
+			Tabela.remove_child(item)
+			item.queue_free()
+		Tabela.columns = 1
+	else:
+		for item in Tabela.get_children():
+			if item.Arquivo == arquivo:
+				return
+	var base: Image = Image.load_from_file(arquivo)
+	var textura: ImageTexture = ImageTexture.create_from_image(base)
+	var tamanho_da_imagem: Vector2 = Vector2(float(base.get_size().x),float(base.get_size().y))
+	var tamanho_medio: Vector2 = tamanho_da_imagem
+	var quantidade_de_imagens: float = 1.0
+	for item in Tabela.get_children():
+		tamanho_medio += item.TamanhoOriginalDaImagem
+		quantidade_de_imagens += 1.0
+	tamanho_medio = tamanho_medio / quantidade_de_imagens
+	var novo_item: CItemEmExibicao = ItemEmExibicao.instantiate()
+	Tabela.add_child(novo_item)
+	novo_item.preencher(arquivo, textura, tamanho_da_imagem)
+	_reposicionar(tamanho_medio)
+
+# REMOVER
+func remover(arquivo: String) -> void:
+	var tamanho_medio: Vector2 = Vector2(0.0,0.0)
+	var quantidade_de_imagens: float = 0.0
+	var contagem: int = 0
+	var item_eliminado: Array = []
+	while contagem < Tabela.get_child_count():
+		var item: CItemEmExibicao = Tabela.get_children()[contagem]
+		if item.Arquivo == arquivo:
+			item_eliminado = [item]
+		else:
+			quantidade_de_imagens += 1.0
+			tamanho_medio += item.TamanhoOriginalDaImagem
+		contagem += 1
+	tamanho_medio = tamanho_medio / quantidade_de_imagens
+	if item_eliminado != []:
+		Tabela.remove_child(item_eliminado[0])
+		item_eliminado[0].queue_free()
+		_reposicionar(tamanho_medio)
+
+# REPOSICIONAR TABELA
+func _reposicionar(tamanho_medio: Vector2) -> void:
+	var numero_de_linhas: float = float(Tabela.get_child_count()) / float(Tabela.columns)
+	if numero_de_linhas > float(Tabela.columns):
+		Tabela.columns += 1
+	for item in Tabela.get_children():
+		item.reajustar(tamanho_medio)
+	Tamanho.x = float(Tabela.columns) * tamanho_medio.x
+	Tamanho.y = ceilf(float(Tabela.get_child_count()) / float(Tabela.columns)) * tamanho_medio.y
+	Tabela.position = Vector2(0.0,0.0) - (Tamanho / 2.0)
+	var escala_vertical: float = 1.0
+	while Tamanho.y * escala_vertical >= 0.95 * self.size.y:
+		escala_vertical -= 0.005
+	var escala_horizontal: float = 1.0
+	while Tamanho.x * escala_horizontal >= 0.95 * self.size.x:
+		escala_horizontal -= 0.005
+	var escala_final: float = min(escala_vertical,escala_horizontal)
+	Origem.position = self.size / 2.0
+	Origem.scale = Vector2(escala_final, escala_final)

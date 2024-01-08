@@ -1,3 +1,5 @@
-res://Principal/Principal.tscn
-res://Exibidor/Exibidor.gd
+res://Exibidor/ItemEmExibicao/ItemEmExibicao.tscn
+res://Exibidor/ItemEmExibicao/ItemEmExibicao.gd
 res://Exibidor/Exibidor.tscn
+res://Exibidor/Exibidor.gd
+res://Principal/Principal.tscn
