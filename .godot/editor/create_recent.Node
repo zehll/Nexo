@@ -1,8 +1,8 @@
-TextureRect
 Label
 ColorRect
-LineEdit
 Node2D
+TextureRect
+LineEdit
 VBoxContainer
 GridContainer
 Marker2D

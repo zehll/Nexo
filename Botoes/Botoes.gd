@@ -36,6 +36,7 @@ class_name CBotoes
 @onready var IconeMaximizar: TextureRect = $Maximizar/Icone
 @onready var Sair: ColorRect = $Sair
 @onready var IconeSair: TextureRect = $Sair/Icone
+@onready var Pergunta: PackedScene = preload("res://Pergunta/Pergunta.tscn")
 
 # INICIAR
 func _ready() -> void:
@@ -74,4 +75,55 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
-	pass
+	if botao == Novo: pass
+	elif botao == Abrir: pass
+	elif botao == Salvar: pass
+	elif botao == Modo: pass
+	elif botao == Voltar: pass
+	elif botao == Esquerda: pass
+	elif botao == Direita: pass
+	elif botao == Sorteio: pass
+	elif botao == Adicionar: pass
+	elif botao == VerAmbos: pass
+	elif botao == VerMarcados: pass
+	elif botao == VerDesmarcados: pass
+	elif botao == IconeBuscar: pass
+	elif botao == TelaCheia: _alterar_janela(2)
+	elif botao == Minimizar: _alterar_janela(0)
+	elif botao == Maximizar: _alterar_janela(1)
+	elif botao == Sair: _sair(0,0)
+
+# ALTERAR TAMANHO DA JANELA
+func _alterar_janela(modo: int) -> void:
+	if modo == 0:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
+	else:
+		var tamanho_da_tela: Vector2i = DisplayServer.screen_get_size()
+		if modo == 1:
+			if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			if get_window().size.x == tamanho_da_tela.x:
+				get_window().size = Vector2i(1152,648)
+				get_window().position = Vector2i(tamanho_da_tela / 2) - Vector2i(576,324)
+			else:
+				get_window().size = Vector2i(tamanho_da_tela.x,roundi(0.94 * tamanho_da_tela.y))
+				get_window().position = Vector2i(0,0)
+		elif modo == 2:
+			if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+				get_window().size = Vector2i(1152,648)
+				get_window().position = Vector2i(tamanho_da_tela / 2) - Vector2i(576,324)
+			else:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+
+# SAIR
+func _sair(resposta: int, etapa: int) -> void:
+	if etapa == 0:
+		if self.get_parent().Janelas.get_child_count() > 0:
+			self.get_parent().Janelas.get_children()[0].fechar()
+		if self.get_parent().Arquivo == "":
+			get_tree().quit()
+		else:
+			pass
+	else:
+		pass

@@ -19,6 +19,8 @@ focus_mode = 1
 
 [node name="ListaDeRotulos" parent="." instance=ExtResource("3_xuii1")]
 
+[node name="Janelas" type="Node2D" parent="."]
+
 [node name="Margens" parent="." instance=ExtResource("2_xv1ar")]
 
 [node name="Botoes" parent="." instance=ExtResource("5_bd3qt")]

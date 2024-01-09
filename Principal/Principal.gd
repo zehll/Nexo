@@ -5,6 +5,7 @@ class_name CPrincipal
 @onready var Exibidor: CExibidor = $Exibidor
 @onready var ListaDeImagens: CListaDeImagens = $ListaDeImagens
 @onready var ListaDeRotulos: CListaDeRotulos = $ListaDeRotulos
+@onready var Janelas: Node2D = $Janelas
 @onready var Margens: CMargens = $Margens
 @onready var Botoes: CBotoes = $Botoes
 
@@ -28,4 +29,4 @@ class_name CPrincipal
 
 # INICIAR
 func _ready() -> void:
-	Mouse.Principal = self
+	Mouse.Principal = [self]

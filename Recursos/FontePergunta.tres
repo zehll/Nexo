@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://byj643edjv50e"]
+
+[ext_resource type="FontFile" uid="uid://bfeb10cfhq5f7" path="res://Fontes/RobotoSlabGrande.ttf" id="1_sdsgx"]
+
+[resource]
+font = ExtResource("1_sdsgx")
+font_size = 22
+font_color = Color(0.4, 0.4, 0.4, 1)

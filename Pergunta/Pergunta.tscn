@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfi87ml8cqcte"]
+
+[ext_resource type="Script" path="res://Pergunta/Pergunta.gd" id="1_6225v"]
+[ext_resource type="LabelSettings" uid="uid://byj643edjv50e" path="res://Recursos/FontePergunta.tres" id="1_yoxm1"]
+[ext_resource type="LabelSettings" uid="uid://c2jmpsw8wqf73" path="res://Recursos/FonteResposta.tres" id="2_kygnc"]
+
+[node name="Fundo" type="ColorRect"]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 1149.0
+offset_bottom = 645.0
+color = Color(0, 0, 0, 0.5)
+script = ExtResource("1_6225v")
+
+[node name="Borda" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 383.0
+offset_top = 249.0
+offset_right = 783.0
+offset_bottom = 363.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Janela" type="ColorRect" parent="Borda"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 397.0
+offset_bottom = 111.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Pergunta" type="Label" parent="Borda/Janela"]
+layout_mode = 0
+offset_right = 393.0
+offset_bottom = 45.0
+text = "Qual pergunta estará escrita aqui?"
+label_settings = ExtResource("1_yoxm1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Botao1" type="ColorRect" parent="Borda/Janela"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 51.0
+offset_right = 186.0
+offset_bottom = 93.0
+mouse_default_cursor_shape = 2
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="InteriorBotao1" type="ColorRect" parent="Borda/Janela/Botao1"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 173.0
+offset_bottom = 39.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Texto1" type="Label" parent="Borda/Janela/Botao1/InteriorBotao1"]
+self_modulate = Color(0.4, 0.4, 0.4, 1)
+layout_mode = 0
+offset_right = 170.0
+offset_bottom = 36.0
+text = "Primeira Resposta"
+label_settings = ExtResource("2_kygnc")
+horizontal_alignment = 1
+vertical_alignment = 1
