@@ -18,9 +18,12 @@ class_name CListaDeRotulos
 @onready var IconeDireitaDois: TextureRect = $DireitaDois/Icone
 @onready var DireitaTres: ColorRect = $DireitaTres
 @onready var IconeDireitaTres: TextureRect = $DireitaTres/Icone
+@onready var ItemRotulo: PackedScene = preload("res://ListaDeRotulos/ItemRotulo/ItemRotulo.tscn")
 
 # VARIÁVEIS
 @onready var PosicaoNaJanela: float = 0.7
+@onready var RotulosValidos: Array = []
+@onready var Paginas: int = 0
 
 # INICIAR
 func _ready() -> void:
@@ -51,6 +54,8 @@ func _atualizar_tamanho() -> void:
 		posicao_x_dos_botoes += roundi(largura_dos_botoes) + 3
 	for item in [IconeEsquerdaTres,IconeEsquerdaDois,IconeEsquerdaUm,IconeDireitaUm,IconeDireitaDois,IconeDireitaTres]:
 		item.position.x = (largura_dos_botoes / 2.0) - 10.0
+	for item in Lista.get_children():
+		item.atualizar_tamanho()
 
 # ATUALIZAR COR
 func _atualizar_cor(botao: Node, estado: int) -> void:
@@ -86,8 +91,46 @@ func _physics_process(_delta: float) -> void:
 
 # ATUALIZAR
 func atualizar(busca: String) -> void:
-	pass
+	var rotulos_validos: Array = []
+	for rotulo in Principal.Rotulos:
+		if busca != "":
+			if rotulo[0].left(busca.length()) == busca:
+				rotulos_validos.append(rotulo)
+		else:
+			rotulos_validos.append(rotulo)
+	if Principal.ModoImagem:
+		if Principal.Visualizacao == 1:
+			for rotulo in rotulos_validos:
+				if not Principal.ItemAtual[1].has(rotulo[0]):
+					rotulos_validos.erase(rotulo)
+		elif Principal.Visualizacao == 2:
+			for rotulo in rotulos_validos:
+				if Principal.ItemAtual[1].has(rotulo[0]):
+					rotulos_validos.erase(rotulo)
+	RotulosValidos = rotulos_validos
+	_preencher_pagina(0)
 
-# ALTERAR STATUS
-func alterar_status() -> void:
-	pass
+# PREENCHER PÁGINA
+func _preencher_pagina(pagina: int) -> void:
+	for item in Lista.get_children():
+		item.fechar()
+	var itens_cabiveis: int = floori(Lista.size.y / 45.0)
+	Paginas = ceili(float(RotulosValidos.size()) / float(itens_cabiveis))
+	var contagem: int = 0
+	var indice_atual: int = pagina * itens_cabiveis
+	while contagem < min(itens_cabiveis,RotulosValidos.size()):
+		var rotulo_atual: Array = RotulosValidos[indice_atual]
+		var todos_os_superiores: Array = []
+		var superior_atual: String = RotulosValidos[indice_atual][1]
+		while superior_atual != "Origem":
+			todos_os_superiores.append(superior_atual)
+			for item in Principal.Rotulos:
+				if item[0] == superior_atual:
+					superior_atual = item[1]
+		var novo_rotulo: CItemRotulo = ItemRotulo.instantiate()
+		Lista.add_child(novo_rotulo)
+		if Principal.ModoImagem:
+			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ModoImagem,Principal.ItemAtual[1].has(rotulo_atual[0]))
+		else:
+			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ModoImagem)
+		contagem += 1

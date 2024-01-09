@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=3 uid="uid://7jhecuwv03lj"]
+
+[ext_resource type="Script" path="res://ListaDeRotulos/ItemRotulo/ItemRotulo.gd" id="1_ctg3e"]
+[ext_resource type="Texture2D" uid="uid://cib1mdt6j8bfq" path="res://Icones/Apagar.png" id="1_hau8p"]
+[ext_resource type="Texture2D" uid="uid://d00c1mm6gn1sm" path="res://Icones/Editar.png" id="2_a3lrg"]
+[ext_resource type="Texture2D" uid="uid://dhngwi416vnwt" path="res://Icones/Adicionar.png" id="3_cjpuk"]
+[ext_resource type="LabelSettings" uid="uid://c3udanfy004ah" path="res://Recursos/FontePrincipalLista.tres" id="4_swp1w"]
+[ext_resource type="LabelSettings" uid="uid://ba81tf4e1ja2j" path="res://Recursos/FonteInferiorLista.tres" id="5_8vlye"]
+
+[node name="ItemRotulo" type="ColorRect"]
+custom_minimum_size = Vector2(0, 45)
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_ctg3e")
+
+[node name="Apagar" type="TextureRect" parent="."]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 20.0
+offset_bottom = 20.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("1_hau8p")
+expand_mode = 1
+
+[node name="Editar" type="TextureRect" parent="."]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 5.0
+offset_right = 40.0
+offset_bottom = 20.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("2_a3lrg")
+expand_mode = 1
+
+[node name="Adicionar" type="TextureRect" parent="."]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 25.0
+offset_right = 20.0
+offset_bottom = 40.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("3_cjpuk")
+expand_mode = 1
+
+[node name="Nome" type="Label" parent="."]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+layout_mode = 0
+offset_left = 55.0
+offset_right = 295.0
+offset_bottom = 30.0
+text = "Nome do Rótulo"
+label_settings = ExtResource("4_swp1w")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Subtitulo" type="Label" parent="."]
+self_modulate = Color(0.4, 0.4, 0.4, 1)
+layout_mode = 0
+offset_left = 27.0
+offset_top = 26.0
+offset_right = 295.0
+offset_bottom = 44.0
+text = "Nome do superior > Nome do grupo"
+label_settings = ExtResource("5_8vlye")
+horizontal_alignment = 1
+clip_text = true
+text_overrun_behavior = 3

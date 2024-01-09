@@ -23,7 +23,6 @@ func iniciar(arquivo: String, modo_imagem: bool, marcado: bool = true) -> void:
 		else:
 			Apagar.self_modulate = Color(0.2,0.0,0.0,1.0)
 			Nome.self_modulate = Color(0.5,0.0,0.0,1.0)
-	atualizar_tamanho()
 	for item in [self,Apagar]:
 		item.mouse_entered.connect(Mouse.localizar.bind(item))
 		item.mouse_exited.connect(Mouse.localizar.bind(Mouse))
@@ -31,6 +30,7 @@ func iniciar(arquivo: String, modo_imagem: bool, marcado: bool = true) -> void:
 	Mouse.Entrou.connect(_atualizar_cor.bind(1))
 	Mouse.IniciouClique.connect(_atualizar_cor.bind(2))
 	Mouse.CliqueValido.connect(_clique)
+	atualizar_tamanho()
 
 # ATUALIZAR TAMANHO
 func atualizar_tamanho() -> void:
@@ -124,3 +124,19 @@ func _clique(botao: Node) -> void:
 		pass
 	elif botao == Apagar:
 		pass
+
+# FECHAR
+func fechar() -> void:
+	get_viewport().disconnect("size_changed",atualizar_tamanho)
+	Mouse.disconnect("Saiu",_atualizar_cor)
+	Mouse.disconnect("Entrou",_atualizar_cor)
+	Mouse.disconnect("IniciouClique",_atualizar_cor)
+	Mouse.disconnect("CliqueValido",_clique)
+	Apagar.disconnect("mouse_entered",Mouse.localizar)
+	Apagar.disconnect("mouse_exited",Mouse.localizar)
+	Mouse.localizar(Mouse)
+	for item in [Nome,Apagar]:
+		self.remove_child(item)
+		item.queue_free()
+	self.get_parent().remove_child(self)
+	self.queue_free()

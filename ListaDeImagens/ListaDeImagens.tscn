@@ -87,15 +87,15 @@ mouse_filter = 2
 texture = ExtResource("4_vs73l")
 expand_mode = 1
 
-[node name="DireitaUm" type="ColorRect" parent="."]
-offset_left = 204.0
+[node name="DireitaTres" type="ColorRect" parent="."]
+offset_left = 270.0
 offset_top = 615.0
-offset_right = 234.0
+offset_right = 300.0
 offset_bottom = 645.0
 mouse_default_cursor_shape = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Icone" type="TextureRect" parent="DireitaUm"]
+[node name="Icone" type="TextureRect" parent="DireitaTres"]
 self_modulate = Color(0.2, 0.2, 0.2, 1)
 layout_mode = 0
 offset_left = 5.0
@@ -103,7 +103,7 @@ offset_top = 5.0
 offset_right = 25.0
 offset_bottom = 25.0
 mouse_filter = 2
-texture = ExtResource("4_vs73l")
+texture = ExtResource("2_8u4vg")
 expand_mode = 1
 flip_h = true
 
@@ -127,15 +127,15 @@ texture = ExtResource("3_7qn1k")
 expand_mode = 1
 flip_h = true
 
-[node name="DireitaTres" type="ColorRect" parent="."]
-offset_left = 270.0
+[node name="DireitaUm" type="ColorRect" parent="."]
+offset_left = 204.0
 offset_top = 615.0
-offset_right = 300.0
+offset_right = 234.0
 offset_bottom = 645.0
 mouse_default_cursor_shape = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Icone" type="TextureRect" parent="DireitaTres"]
+[node name="Icone" type="TextureRect" parent="DireitaUm"]
 self_modulate = Color(0.2, 0.2, 0.2, 1)
 layout_mode = 0
 offset_left = 5.0
@@ -143,6 +143,6 @@ offset_top = 5.0
 offset_right = 25.0
 offset_bottom = 25.0
 mouse_filter = 2
-texture = ExtResource("2_8u4vg")
+texture = ExtResource("4_vs73l")
 expand_mode = 1
 flip_h = true

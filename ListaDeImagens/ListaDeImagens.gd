@@ -111,8 +111,7 @@ func atualizar(busca: String) -> void:
 # PREENCHER PÁGINA
 func _preencher_pagina(pagina: int) -> void:
 	for item in Lista.get_children():
-		Lista.remove_child(item)
-		item.queue_free()
+		item.fechar()
 	var itens_cabiveis: int = floori(Lista.size.y / 30.0)
 	Paginas = ceili(float(ImagensValidas.size()) / float(itens_cabiveis))
 	var contagem: int = 0
@@ -127,7 +126,3 @@ func _preencher_pagina(pagina: int) -> void:
 			novo_item.iniciar(imagem_atual[0],Principal.ModoImagem,imagem_atual[1].has(Principal.ItemAtual[0]))
 		indice_atual += 1
 		contagem += 1
-
-# ALTERAR STATUS
-func alterar_status() -> void:
-	pass

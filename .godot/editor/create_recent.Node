@@ -1,7 +1,7 @@
 Label
+TextureRect
 ColorRect
 Node2D
-TextureRect
 LineEdit
 VBoxContainer
 GridContainer
