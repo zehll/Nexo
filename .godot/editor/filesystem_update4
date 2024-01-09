@@ -1,6 +1,6 @@
-res://Principal/Principal.tscn
+res://ListaDeImagens/ItemImagem/ItemImagem.tscn
+res://ListaDeImagens/ItemImagem/ItemImagem.gd
 res://ListaDeImagens/ListaDeImagens.tscn
-res://ListaDeRotulos/ListaDeRotulos.tscn
-res://Botoes/Botoes.tscn
-res://Botoes/Botoes.gd
-res://Margens/Margens.gd
+res://ListaDeImagens/ListaDeImagens.gd
+res://Principal/Principal.tscn
+res://Principal/Principal.gd

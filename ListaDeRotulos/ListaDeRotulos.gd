@@ -2,6 +2,7 @@ extends Node2D
 class_name CListaDeRotulos
 
 # ELEMENTOS DA CENA
+@onready var Principal: CPrincipal
 @onready var Margem: ColorRect = $Margem
 @onready var Fundo: ColorRect = $Fundo
 @onready var Lista: VBoxContainer = $Fundo/Lista
@@ -20,10 +21,10 @@ class_name CListaDeRotulos
 
 # VARIÁVEIS
 @onready var PosicaoNaJanela: float = 0.7
-@onready var ModoRotulo: bool = false
 
 # INICIAR
 func _ready() -> void:
+	Principal = self.get_parent()
 	for item in [Margem,EsquerdaTres,EsquerdaDois,EsquerdaUm,DireitaUm,DireitaDois,DireitaTres]:
 		item.mouse_entered.connect(Mouse.localizar.bind(item))
 		item.mouse_exited.connect(Mouse.localizar.bind(Mouse))
@@ -62,5 +63,5 @@ func atualizar(busca: String) -> void:
 	pass
 
 # ALTERAR STATUS
-func alterar_status(modo_rotulo: bool) -> void:
+func alterar_status() -> void:
 	pass

@@ -2,6 +2,7 @@ extends Node2D
 class_name CListaDeImagens
 
 # ELEMENTOS DA CENA
+@onready var Principal: CPrincipal
 @onready var Margem: ColorRect = $Margem
 @onready var Fundo: ColorRect = $Fundo
 @onready var Lista: VBoxContainer = $Fundo/Lista
@@ -17,13 +18,16 @@ class_name CListaDeImagens
 @onready var IconeDireitaDois: TextureRect = $DireitaDois/Icone
 @onready var DireitaTres: ColorRect = $DireitaTres
 @onready var IconeDireitaTres: TextureRect = $DireitaTres/Icone
+@onready var ItemImagem: PackedScene = preload("res://ListaDeImagens/ItemImagem/ItemImagem.tscn")
 
 # VARIÁVEIS
 @onready var PosicaoNaJanela: float = 0.3
-@onready var ModoImagem: bool = true
+@onready var ImagensValidas: Array = []
+@onready var Paginas: int = 0
 
 # INICIAR
 func _ready() -> void:
+	Principal = self.get_parent()
 	for item in [Margem,EsquerdaTres,EsquerdaDois,EsquerdaUm,DireitaUm,DireitaDois,DireitaTres]:
 		item.mouse_entered.connect(Mouse.localizar.bind(item))
 		item.mouse_exited.connect(Mouse.localizar.bind(Mouse))
@@ -45,6 +49,8 @@ func _atualizar_tamanho() -> void:
 		posicao_x_dos_botoes += roundi(largura_dos_botoes) + 3
 	for item in [IconeEsquerdaTres,IconeEsquerdaDois,IconeEsquerdaUm,IconeDireitaUm,IconeDireitaDois,IconeDireitaTres]:
 		item.position.x = (largura_dos_botoes / 2.0) - 10.0
+	for item in Lista.get_children():
+		item.atualizar_tamanho()
 
 # PROCESSO CONTÍNUO
 func _physics_process(_delta: float) -> void:
@@ -57,8 +63,45 @@ func _physics_process(_delta: float) -> void:
 
 # ATUALIZAR
 func atualizar(busca: String) -> void:
-	pass
+	var imagens_validas: Array = []
+	for imagem in Principal.Imagens:
+		if busca != "":
+			if imagem[0].left(busca.length()) == busca:
+				imagens_validas.append(imagem)
+		else:
+			imagens_validas.append(imagem)
+	if not Principal.ModoImagem:
+		if Principal.Visualizacao == 1:
+			for imagem in imagens_validas:
+				if not imagem[1].has(Principal.ItemAtual[0]):
+					imagens_validas.erase(imagem)
+		elif Principal.Visualizacao == 2:
+			for imagem in imagens_validas:
+				if imagem[1].has(Principal.ItemAtual[0]):
+					imagens_validas.erase(imagem)
+	ImagensValidas = imagens_validas
+	_preencher_pagina(0)
+
+# PREENCHER PÁGINA
+func _preencher_pagina(pagina: int) -> void:
+	for item in Lista.get_children():
+		Lista.remove_child(item)
+		item.queue_free()
+	var itens_cabiveis: int = floori(Lista.size.y / 30.0)
+	Paginas = ceili(float(ImagensValidas.size()) / float(itens_cabiveis))
+	var contagem: int = 0
+	var indice_atual: int = pagina * itens_cabiveis
+	while contagem < min(itens_cabiveis,ImagensValidas.size()):
+		var novo_item: CItemImagem = ItemImagem.instantiate()
+		var imagem_atual: Array = ImagensValidas[indice_atual]
+		Lista.add_child(novo_item)
+		if Principal.ModoImagem:
+			novo_item.iniciar(imagem_atual[0],Principal.ModoImagem)
+		else:
+			novo_item.iniciar(imagem_atual[0],Principal.ModoImagem,imagem_atual[1].has(Principal.ItemAtual[0]))
+		indice_atual += 1
+		contagem += 1
 
 # ALTERAR STATUS
-func alterar_status(modo_imagem: bool) -> void:
+func alterar_status() -> void:
 	pass

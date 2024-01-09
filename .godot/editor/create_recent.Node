@@ -1,7 +1,7 @@
-LineEdit
-Label
 TextureRect
+Label
 ColorRect
+LineEdit
 Node2D
 VBoxContainer
 GridContainer
