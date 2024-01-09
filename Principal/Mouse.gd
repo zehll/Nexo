@@ -1,5 +1,8 @@
 extends Node
 
+# PRINCIPAL
+var Principal: CPrincipal
+
 # SINAIS
 signal Entrou(local: Node)
 signal Saiu(local: Node)
@@ -22,6 +25,7 @@ func _input(acao: InputEvent) -> void:
 				emit_signal("IniciouClique",LocalValido)
 				LocalUltimoClique = get_viewport().get_mouse_position()
 				MomentoUltimoClique = Time.get_ticks_msec()
+				if not LocalValido is LineEdit: Principal.Exibidor.grab_focus()
 			else:
 				if LocalAtual == LocalValido:
 					emit_signal("CliqueValido",LocalValido)

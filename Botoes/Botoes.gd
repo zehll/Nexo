@@ -39,6 +39,13 @@ class_name CBotoes
 
 # INICIAR
 func _ready() -> void:
+	for item in [Novo,Abrir,Salvar,Modo,Voltar,Esquerda,Direita,Sorteio,Adicionar,TelaCheia,Minimizar,Maximizar,Sair,VerAmbos,VerMarcados,VerDesmarcados,Digitacao,IconeBuscar]:
+		item.mouse_entered.connect(Mouse.localizar.bind(item))
+		item.mouse_exited.connect(Mouse.localizar.bind(Mouse))
+	Mouse.Saiu.connect(_atualizar_cor.bind(0))
+	Mouse.Entrou.connect(_atualizar_cor.bind(1))
+	Mouse.IniciouClique.connect(_atualizar_cor.bind(2))
+	Mouse.CliqueValido.connect(_clique)
 	get_viewport().size_changed.connect(_atualizar_tamanho)
 	_atualizar_tamanho()
 
@@ -51,3 +58,20 @@ func _atualizar_tamanho() -> void:
 	TelaCheia.position.x = Minimizar.position.x - 27.0
 	Titulo.size.x = tamanho_da_janela.x - 672.0
 	TextoTitulo.size.x = Titulo.size.x
+
+# ATUALIZAR COR
+func _atualizar_cor(botao: Node, estado: int) -> void:
+	if [Novo,Abrir,Salvar,Modo,Voltar,Esquerda,Direita,Sorteio,Adicionar,TelaCheia,Minimizar,Maximizar,Sair].has(botao):
+		if estado == 0:
+			botao.color = Color(0.0,0.0,0.0,1.0)
+			botao.get_children()[0].self_modulate = Color(0.2,0.2,0.2,1.0)
+		elif estado == 1:
+			botao.color = Color(0.07,0.07,0.07,1.0)
+			botao.get_children()[0].self_modulate = Color(0.27,0.27,0.27,1.0)
+		elif estado == 2:
+			botao.color = Color(0.15,0.15,0.15,1.0)
+			botao.get_children()[0].self_modulate = Color(0.36,0.35,0.35,1.0)
+
+# COMPUTAR CLIQUE
+func _clique(botao: Node) -> void:
+	pass

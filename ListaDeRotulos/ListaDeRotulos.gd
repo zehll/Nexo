@@ -28,6 +28,10 @@ func _ready() -> void:
 	for item in [Margem,EsquerdaTres,EsquerdaDois,EsquerdaUm,DireitaUm,DireitaDois,DireitaTres]:
 		item.mouse_entered.connect(Mouse.localizar.bind(item))
 		item.mouse_exited.connect(Mouse.localizar.bind(Mouse))
+	Mouse.Saiu.connect(_atualizar_cor.bind(0))
+	Mouse.Entrou.connect(_atualizar_cor.bind(1))
+	Mouse.IniciouClique.connect(_atualizar_cor.bind(2))
+	Mouse.CliqueValido.connect(_clique)
 	get_viewport().size_changed.connect(_atualizar_tamanho)
 	_atualizar_tamanho()
 
@@ -47,6 +51,28 @@ func _atualizar_tamanho() -> void:
 		posicao_x_dos_botoes += roundi(largura_dos_botoes) + 3
 	for item in [IconeEsquerdaTres,IconeEsquerdaDois,IconeEsquerdaUm,IconeDireitaUm,IconeDireitaDois,IconeDireitaTres]:
 		item.position.x = (largura_dos_botoes / 2.0) - 10.0
+
+# ATUALIZAR COR
+func _atualizar_cor(botao: Node, estado: int) -> void:
+	if [EsquerdaTres,EsquerdaDois,EsquerdaUm,DireitaUm,DireitaDois,DireitaTres].has(botao):
+		if estado == 0:
+			botao.color = Color(0.0,0.0,0.0,1.0)
+			botao.get_children()[0].self_modulate = Color(0.2,0.2,0.2,1.0)
+		elif estado == 1:
+			botao.color = Color(0.05,0.05,0.05,1.0)
+			botao.get_children()[0].self_modulate = Color(0.25,0.25,0.25,1.0)
+		elif estado == 2:
+			botao.color = Color(0.1,0.1,0.1,1.0)
+			botao.get_children()[0].self_modulate = Color(0.3,0.3,0.3,1.0)
+
+# COMPUTAR CLIQUE
+func _clique(botao: Node) -> void:
+	if botao == EsquerdaTres: pass
+	elif botao == EsquerdaDois: pass
+	elif botao == EsquerdaUm: pass
+	elif botao == DireitaUm: pass
+	elif botao == DireitaDois: pass
+	elif botao == DireitaTres: pass
 
 # PROCESSO CONTÍNUO
 func _physics_process(_delta: float) -> void:

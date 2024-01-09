@@ -1,6 +1,10 @@
 res://ListaDeImagens/ItemImagem/ItemImagem.tscn
 res://ListaDeImagens/ItemImagem/ItemImagem.gd
-res://ListaDeImagens/ListaDeImagens.tscn
+res://ListaDeRotulos/ListaDeRotulos.gd
 res://ListaDeImagens/ListaDeImagens.gd
+res://ListaDeImagens/ListaDeImagens.tscn
 res://Principal/Principal.tscn
+res://Botoes/Botoes.gd
+res://Botoes/Botoes.tscn
+res://Principal/Mouse.gd
 res://Principal/Principal.gd

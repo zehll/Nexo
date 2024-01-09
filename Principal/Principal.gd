@@ -25,3 +25,7 @@ class_name CPrincipal
 # ...RÓTULO = [NOME, SUPERIOR]
 # ......NOME = "Florestas"
 # ......SUPERIOR = "Paisagens"
+
+# INICIAR
+func _ready() -> void:
+	Mouse.Principal = self

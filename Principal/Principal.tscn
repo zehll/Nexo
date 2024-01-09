@@ -13,6 +13,7 @@ script = ExtResource("1_yrhef")
 [node name="Exibidor" parent="." instance=ExtResource("1_2i5fx")]
 offset_right = 1152.0
 offset_bottom = 648.0
+focus_mode = 1
 
 [node name="ListaDeImagens" parent="." instance=ExtResource("3_s621j")]
 
