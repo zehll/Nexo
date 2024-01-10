@@ -1,0 +1,150 @@
+[gd_scene load_steps=8 format=3 uid="uid://r7oxr54d0qbw"]
+
+[ext_resource type="Texture2D" uid="uid://npwsqyj1em7a" path="res://Icones/Voltar.png" id="1_4t1fc"]
+[ext_resource type="Script" path="res://Pastas/Pastas.gd" id="1_037rk"]
+[ext_resource type="FontFile" uid="uid://pcy2ihee5wsd" path="res://Fontes/RobotoSlabPequena.ttf" id="1_6187f"]
+[ext_resource type="LabelSettings" uid="uid://c2jmpsw8wqf73" path="res://Recursos/FonteResposta.tres" id="1_r07sq"]
+[ext_resource type="FontFile" uid="uid://cnl7nuclp261o" path="res://Fontes/RobotoSlabMedia.ttf" id="2_ssu58"]
+[ext_resource type="StyleBox" uid="uid://coofeg4688ju8" path="res://Recursos/Digitacao.tres" id="4_s6vd3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fmsrt"]
+font = ExtResource("2_ssu58")
+font_size = 15
+font_color = Color(0.4, 0.4, 0.4, 1)
+
+[node name="Fundo" type="ColorRect"]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 1149.0
+offset_bottom = 645.0
+color = Color(0, 0, 0, 0.5)
+script = ExtResource("1_037rk")
+
+[node name="Bordas" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 287.0
+offset_top = 68.0
+offset_right = 868.0
+offset_bottom = 569.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Voltar" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 28.0
+offset_bottom = 28.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Icone" type="TextureRect" parent="Bordas/Voltar"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 20.0
+offset_bottom = 20.0
+mouse_filter = 2
+texture = ExtResource("1_4t1fc")
+expand_mode = 1
+
+[node name="FaixaSuperior" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 3.0
+offset_right = 578.0
+offset_bottom = 28.0
+color = Color(0, 0, 0, 1)
+
+[node name="Texto" type="Label" parent="Bordas/FaixaSuperior"]
+layout_mode = 0
+offset_right = 546.0
+offset_bottom = 25.0
+text = "Atividade"
+label_settings = SubResource("LabelSettings_fmsrt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Janela" type="ColorRect" parent="Bordas"]
+layout_mode = 1
+offset_left = 3.0
+offset_top = 31.0
+offset_right = 578.0
+offset_bottom = 437.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BarraDeRolagem" type="ScrollContainer" parent="Bordas/Janela"]
+layout_mode = 0
+offset_right = 574.0
+offset_bottom = 406.0
+mouse_filter = 2
+horizontal_scroll_mode = 3
+
+[node name="Grade" type="GridContainer" parent="Bordas/Janela/BarraDeRolagem"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FaixaInferior" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 440.0
+offset_right = 578.0
+offset_bottom = 465.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Digitacao" type="LineEdit" parent="Bordas/FaixaInferior"]
+layout_mode = 0
+offset_left = 4.0
+offset_right = 571.0
+offset_bottom = 25.0
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_fonts/font = ExtResource("1_6187f")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = ExtResource("4_s6vd3")
+theme_override_styles/focus = ExtResource("4_s6vd3")
+theme_override_styles/read_only = ExtResource("4_s6vd3")
+caret_blink = true
+
+[node name="Botao1" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 468.0
+offset_right = 277.0
+offset_bottom = 498.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Texto" type="Label" parent="Bordas/Botao1"]
+self_modulate = Color(0.4, 0.4, 0.4, 1)
+layout_mode = 0
+offset_right = 272.0
+offset_bottom = 29.0
+text = "Texto do Botão 1"
+label_settings = ExtResource("1_r07sq")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Botao2" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 281.0
+offset_top = 468.0
+offset_right = 578.0
+offset_bottom = 498.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Texto" type="Label" parent="Bordas/Botao2"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_right = 295.0
+offset_bottom = 29.0
+text = "Texto do Botão 1"
+label_settings = ExtResource("1_r07sq")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3

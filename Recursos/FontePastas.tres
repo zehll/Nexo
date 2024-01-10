@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://c8uwv4tii122c"]
+
+[ext_resource type="FontFile" uid="uid://pcy2ihee5wsd" path="res://Fontes/RobotoSlabPequena.ttf" id="1_v1hln"]
+
+[resource]
+font = ExtResource("1_v1hln")
+font_size = 11
