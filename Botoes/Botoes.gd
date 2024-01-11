@@ -2,6 +2,7 @@ extends Node2D
 class_name CBotoes
 
 # ELEMENTOS DA CENA
+@onready var Principal: CPrincipal
 @onready var Novo: ColorRect = $Novo
 @onready var IconeNovo: TextureRect = $Novo/Icone
 @onready var Abrir: ColorRect = $Abrir
@@ -38,6 +39,7 @@ class_name CBotoes
 @onready var IconeSair: TextureRect = $Sair/Icone
 @onready var Pergunta: PackedScene = preload("res://Pergunta/Pergunta.tscn")
 @onready var Pastas: PackedScene = preload("res://Pastas/Pastas.tscn")
+@onready var NovoRotulo: PackedScene = preload("res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn")
 
 # VARIÁVEIS
 @onready var SalvarPreNovo: bool = false
@@ -55,6 +57,8 @@ func _ready() -> void:
 	Mouse.CliqueValido.connect(_clique)
 	get_viewport().size_changed.connect(_atualizar_tamanho)
 	_atualizar_tamanho()
+func iniciar() -> void:
+	Principal = Mouse.Principal[0]
 
 # ATUALIZAR TAMANHO
 func _atualizar_tamanho() -> void:
@@ -79,7 +83,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 			botao.color = Color(0.15,0.15,0.15,1.0)
 			botao.get_children()[0].self_modulate = Color(0.36,0.35,0.35,1.0)
 	elif [VerAmbos,VerMarcados,VerDesmarcados].has(botao):
-		if self.get_parent().Visualizacao == 0:
+		if Principal.Visualizacao == 0:
 			if estado == 0:
 				if botao == VerAmbos: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
 				else: botao.self_modulate = Color(0.1,0.1,0.1,1.0)
@@ -89,7 +93,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 			elif estado == 2:
 				if botao == VerAmbos: botao.self_modulate = Color(0.3,0.3,0.3,1.0)
 				else: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
-		elif self.get_parent().Visualizacao == 1:
+		elif Principal.Visualizacao == 1:
 			if estado == 0:
 				if botao == VerMarcados: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
 				else: botao.self_modulate = Color(0.1,0.1,0.1,1.0)
@@ -99,7 +103,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 			elif estado == 2:
 				if botao == VerMarcados: botao.self_modulate = Color(0.3,0.3,0.3,1.0)
 				else: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
-		elif self.get_parent().Visualizacao == 2:
+		elif Principal.Visualizacao == 2:
 			if estado == 0:
 				if botao == VerDesmarcados: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
 				else: botao.self_modulate = Color(0.1,0.1,0.1,1.0)
@@ -156,245 +160,256 @@ func _alterar_janela(modo: int) -> void:
 
 # NOVO
 func _novo(resposta: int, etapa: int) -> void:
-	if self.get_parent().Janelas.get_child_count() > 0:
-		self.get_parent().Janelas.get_children()[0].fechar()
+	if Principal.Janelas.get_child_count() > 0:
+		Principal.Janelas.get_children()[0].fechar()
 	if etapa == 0:
-		if self.get_parent().Arquivo != ""  or self.get_parent().Imagens != [] or self.get_parent().Rotulos != []:
+		if Principal.Arquivo != ""  or Principal.Imagens != [] or Principal.Rotulos != []:
 			var questionar_novo: CPergunta = Pergunta.instantiate()
-			self.get_parent().Janelas.add_child(questionar_novo)
+			Principal.Janelas.add_child(questionar_novo)
 			questionar_novo.iniciar("Você deseja salvar o projeto atual?",["Cancelar","Sim","Não"])
 			questionar_novo.Resposta.connect(_novo.bind(1))
 	else:
 		if resposta == 0:
-			self.get_parent().Janelas.get_children()[0].fechar()
+			Principal.Janelas.get_children()[0].fechar()
 		elif resposta == 1:
 			SalvarPreNovo = true
 			_salvar("",0)
 		else:
-			self.get_parent().Arquivo == ""
-			self.get_parent().Imagens = []
-			self.get_parent().Rotulos = []
-			self.get_parent().ItemAtual = []
+			Principal.Arquivo = ""
+			Principal.Imagens = []
+			Principal.Rotulos = []
+			Principal.ItemAtual = []
 			Digitacao.text = ""
-			self.get_parent().ListaDeImagens.atualizar("")
-			self.get_parent().ListaDeRotulos.atualizar("")
-			self.get_parent().Exibidor.zerar()
-			self.get_parent().Janelas.get_children()[0].fechar()
+			Principal.ListaDeImagens.atualizar("")
+			Principal.ListaDeRotulos.atualizar("")
+			Principal.Exibidor.zerar()
+			Principal.Janelas.get_children()[0].fechar()
 
 # ABRIR
 func _abrir(resposta: String, etapa: int) -> void:
 	if etapa == 0:
-		if self.get_parent().Janelas.get_child_count() != 0:
-			self.get_parent().Janelas.get_children()[0].fechar()
+		if Principal.Janelas.get_child_count() != 0:
+			Principal.Janelas.get_children()[0].fechar()
 		var questionar_abrir: CPastas = Pastas.instantiate()
-		self.get_parent().Janelas.add_child(questionar_abrir)
+		Principal.Janelas.add_child(questionar_abrir)
 		questionar_abrir.iniciar(CPastas.Atividades.Abrir)
 		questionar_abrir.Abrir.connect(_abrir.bind(1))
 		questionar_abrir.Cancelar.connect(_abrir.bind(2))
 	elif etapa == 1:
 		var arquivo: Resource = ResourceLoader.load(resposta)
 		if arquivo is CDados:
-			self.get_parent().Arquivo = resposta
-			self.get_parent().Imagens = arquivo.Imagens
-			self.get_parent().Rotulos = arquivo.Rotulos
-			self.get_parent().Exibidor.zerar()
-			if self.get_parent().ModoImagem:
-				self.get_parent().ItemAtual = arquivo.Imagens[0]
-				self.get_parent().Exibidor.adicionar(arquivo.Imagens[0][0])
+			Principal.Arquivo = resposta
+			Principal.Imagens = arquivo.Imagens
+			Principal.Rotulos = arquivo.Rotulos
+			Principal.Exibidor.zerar()
+			if Principal.ModoImagem:
+				Principal.ItemAtual = arquivo.Imagens[0]
+				Principal.Exibidor.adicionar(arquivo.Imagens[0][0])
 			else:
-				self.get_parent().ItemAtual = arquivo.Rotulos[0]
-				for imagem in self.get_parent().Imagens:
-					if imagem[1].has(self.get_parent().ItemAtual[0]):
-						self.get_parent().Exibidor.adicionar(imagem[0])
+				Principal.ItemAtual = arquivo.Rotulos[0]
+				for imagem in Principal.Imagens:
+					if imagem[1].has(Principal.ItemAtual[0]):
+						Principal.Exibidor.adicionar(imagem[0])
 			Digitacao.text = ""
-			self.get_parent().ListaDeImagens.atualizar("")
-			self.get_parent().ListaDeRotulos.atualizar("")
-		self.get_parent().Janelas.get_children()[0].fechar()
+			Principal.ListaDeImagens.atualizar("")
+			Principal.ListaDeRotulos.atualizar("")
+		Principal.Janelas.get_children()[0].fechar()
 	elif etapa == 2:
-		self.get_parent().Janelas.get_children()[0].fechar()
+		Principal.Janelas.get_children()[0].fechar()
 
 # SALVAR
 func _salvar(resposta: String, etapa: int) -> void:
 	if etapa == 0:
-		if (self.get_parent().Arquivo == "" and (self.get_parent().Imagens != [] or self.get_parent().Rotulos != [])) or self.get_parent().Arquivo != []:
-			if self.get_parent().Janelas.get_child_count() != 0:
-				self.get_parent().Janelas.get_children()[0].fechar()
+		if (Principal.Arquivo == "" and (Principal.Imagens != [] or Principal.Rotulos != [])) or Principal.Arquivo != "":
+			if Principal.Janelas.get_child_count() != 0:
+				Principal.Janelas.get_children()[0].fechar()
 			var questionar_salvar: CPastas = Pastas.instantiate()
-			self.get_parent().Janelas.add_child(questionar_salvar)
+			Principal.Janelas.add_child(questionar_salvar)
 			questionar_salvar.iniciar(CPastas.Atividades.Salvar)
 			questionar_salvar.Salvar.connect(_salvar.bind(1))
 			questionar_salvar.Cancelar.connect(_salvar.bind(2))
 	elif etapa == 1:
 		if resposta.right(5) != ".tres": resposta = resposta + ".tres"
 		var novo_arquivo: CDados = CDados.new()
-		novo_arquivo.Imagens = self.get_parent().Imagens
-		novo_arquivo.Rotulos = self.get_parent().Rotulos
+		novo_arquivo.Imagens = Principal.Imagens
+		novo_arquivo.Rotulos = Principal.Rotulos
 		ResourceSaver.save(novo_arquivo,resposta)
-		self.get_parent().Janelas.get_children()[0].fechar()
-		self.get_parent().Arquivo = resposta
+		Principal.Janelas.get_children()[0].fechar()
+		Principal.Arquivo = resposta
 		if SalvarPreNovo:
-			self.get_parent().Arquivo == ""
-			self.get_parent().Imagens = []
-			self.get_parent().Rotulos = []
-			self.get_parent().ItemAtual = []
+			Principal.Arquivo = ""
+			Principal.Imagens = []
+			Principal.Rotulos = []
+			Principal.ItemAtual = []
 			Digitacao.text = ""
-			self.get_parent().ListaDeImagens.atualizar("")
-			self.get_parent().ListaDeRotulos.atualizar("")
-			self.get_parent().Exibidor.zerar()
+			Principal.ListaDeImagens.atualizar("")
+			Principal.ListaDeRotulos.atualizar("")
+			Principal.Exibidor.zerar()
 			SalvarPreNovo = false
 		if SalvarPreSair:
 			get_tree().quit()
 	elif etapa == 2:
 		SalvarPreNovo = false
 		SalvarPreSair = false
-		self.get_parent().Janelas.get_children()[0].fechar()
+		Principal.Janelas.get_children()[0].fechar()
 
 # ALTERAR MODO
 func _modo() -> void:
-	self.get_parent().ModoImagem = not self.get_parent().ModoImagem
+	Principal.ModoImagem = not Principal.ModoImagem
 	UltimosIndices = [0]
-	self.get_parent().Exibidor.zerar()
-	if self.get_parent().ModoImagem:
-		self.get_parent().ItemAtual = self.get_parent().Imagens[0]
-		self.get_parent().Exibidor.adicionar(self.get_parent().ItemAtual[0])
+	Principal.Exibidor.zerar()
+	if Principal.ModoImagem:
+		Principal.ItemAtual = Principal.Imagens[0]
+		Principal.Exibidor.adicionar(Principal.ItemAtual[0])
 	else:
-		self.get_parent().ItemAtual = self.get_parent().Rotulos[0]
-		for imagem in self.get_parent().Imagens:
-			if imagem[1].has(self.get_parent().ItemAtual[0]):
-				self.get_parent().Exibidor.adicionar(imagem[0])
+		Principal.ItemAtual = Principal.Rotulos[0]
+		for imagem in Principal.Imagens:
+			if imagem[1].has(Principal.ItemAtual[0]):
+				Principal.Exibidor.adicionar(imagem[0])
 	Digitacao.text = ""
-	self.get_parent().ListaDeImagens.atualizar("")
-	self.get_parent().ListaDeRotulos.atualizar("")
+	Principal.ListaDeImagens.atualizar("")
+	Principal.ListaDeRotulos.atualizar("")
 
 # MOVER
 func _mover(direcao: int) -> void:
 	if direcao == -1:
 		if UltimosIndices.size() > 1:
 			var indice_atual: int = UltimosIndices.pop_back()
-			self.get_parent().Exibidor.zerar()
-			if self.get_parent().ModoImagem:
-				self.get_parent().ItemAtual = self.get_parent().Imagens[indice_atual]
-				self.get_parent().Exibidor.adicionar(self.get_parent().ItemAtual[0])
+			Principal.Exibidor.zerar()
+			if Principal.ModoImagem:
+				Principal.ItemAtual = Principal.Imagens[indice_atual]
+				Principal.Exibidor.adicionar(Principal.ItemAtual[0])
 			else:
-				self.get_parent().ItemAtual = self.get_parent().Rotulos[indice_atual]
-				for imagem in self.get_parent().Imagens:
-					if imagem[1].has(self.get_parent().ItemAtual[0]):
-						self.get_parent().Exibidor.adicionar(imagem[0])
+				Principal.ItemAtual = Principal.Rotulos[indice_atual]
+				for imagem in Principal.Imagens:
+					if imagem[1].has(Principal.ItemAtual[0]):
+						Principal.Exibidor.adicionar(imagem[0])
 	else:
-		var modo_imagem: bool = self.get_parent().ModoImagem
+		var modo_imagem: bool = Principal.ModoImagem
 		var mais_de_um: bool = false
-		if modo_imagem and self.get_parent().Imagens.size() > 1: mais_de_um = true
-		elif not modo_imagem and self.get_parent().Rotulos.size() > 2: mais_de_um = true
+		if modo_imagem and Principal.Imagens.size() > 1: mais_de_um = true
+		elif not modo_imagem and Principal.Rotulos.size() > 2: mais_de_um = true
 		if mais_de_um:
 			var indice_atual: int = 0
 			if modo_imagem:
-				while self.get_parent().Imagens[indice_atual] != self.get_parent().ItemAtual: indice_atual += 1
+				while Principal.Imagens[indice_atual] != Principal.ItemAtual: indice_atual += 1
 			else:
-				while self.get_parent().Rotulos[indice_atual] != self.get_parent().ItemAtual: indice_atual += 1
+				while Principal.Rotulos[indice_atual] != Principal.ItemAtual: indice_atual += 1
 			if direcao == 0:
 				indice_atual -= 1
 				if indice_atual < 0:
-					if modo_imagem: indice_atual = self.get_parent().Imagens.size() - 1
-					else: indice_atual = self.get_parent().Rotulos.size() - 1
+					if modo_imagem: indice_atual = Principal.Imagens.size() - 1
+					else: indice_atual = Principal.Rotulos.size() - 1
 			elif direcao == 1:
 				indice_atual += 1
-				if modo_imagem and indice_atual >= self.get_parent().Imagens.size(): indice_atual = 0
-				elif not modo_imagem and indice_atual >= self.get_parent().Rotulos.size(): indice_atual = 0
+				if modo_imagem and indice_atual >= Principal.Imagens.size(): indice_atual = 0
+				elif not modo_imagem and indice_atual >= Principal.Rotulos.size(): indice_atual = 0
 			elif direcao == 2:
 				var sorteio: RandomNumberGenerator = RandomNumberGenerator.new()
 				var novo_indice: int
-				if modo_imagem: novo_indice = sorteio.randi_range(0,self.get_parent().Imagens.size() - 1)
-				else: novo_indice = sorteio.randi_range(0,self.get_parent().Rotulos.size() - 1)
+				if modo_imagem: novo_indice = sorteio.randi_range(0,Principal.Imagens.size() - 1)
+				else: novo_indice = sorteio.randi_range(0,Principal.Rotulos.size() - 1)
 				while novo_indice == indice_atual:
 					sorteio.randomize()
-					if modo_imagem: novo_indice = sorteio.randi_range(0,self.get_parent().Imagens.size() - 1)
-					else: novo_indice = sorteio.randi_range(0,self.get_parent().Rotulos.size() - 1)
+					if modo_imagem: novo_indice = sorteio.randi_range(0,Principal.Imagens.size() - 1)
+					else: novo_indice = sorteio.randi_range(0,Principal.Rotulos.size() - 1)
 				indice_atual = novo_indice
 			UltimosIndices.push_back(indice_atual)
-			self.get_parent().Exibidor.zerar()
+			Principal.Exibidor.zerar()
 			if modo_imagem:
-				self.get_parent().ItemAtual = self.get_parent().Imagens[indice_atual]
-				self.get_parent().Exibidor.adicionar(self.get_parent().ItemAtual[0])
+				Principal.ItemAtual = Principal.Imagens[indice_atual]
+				Principal.Exibidor.adicionar(Principal.ItemAtual[0])
 			else:
-				self.get_parent().ItemAtual = self.get_parent().Rotulos[indice_atual]
-				for imagem in self.get_parent().Imagens:
-					if imagem[1].has(self.get_parent().ItemAtual[0]):
-						self.get_parent().Exibidor.adicionar(imagem[0])
+				Principal.ItemAtual = Principal.Rotulos[indice_atual]
+				for imagem in Principal.Imagens:
+					if imagem[1].has(Principal.ItemAtual[0]):
+						Principal.Exibidor.adicionar(imagem[0])
 
 # ADICIONAR
 func _adicionar(resposta: String, etapa: int) -> void:
 	if etapa == 0:
-		if self.get_parent().ModoImagem:
-			pass
+		if Principal.ModoImagem:
+			if Principal.Janelas.get_child_count() != 0:
+				Principal.Janelas.get_children()[0].fechar()
+			var questionar_novo_rotulo: CNovoRotulo = NovoRotulo.instantiate()
+			Principal.Janelas.add_child(questionar_novo_rotulo)
+			questionar_novo_rotulo.iniciar("",false)
+			questionar_novo_rotulo.Cancelamento.connect(_concluir_adicionar_rotulo.bind(0))
+			questionar_novo_rotulo.NovoRotulo.connect(_concluir_adicionar_rotulo.bind(1))
 		else:
-			if self.get_parent().Janelas.get_child_count() != 0:
-				self.get_parent().Janelas.get_children()[0].fechar()
+			if Principal.Janelas.get_child_count() != 0:
+				Principal.Janelas.get_children()[0].fechar()
 			var questionar_nova_imagem: CPastas = Pastas.instantiate()
-			self.get_parent().add_child(questionar_nova_imagem)
+			Principal.Janelas.add_child(questionar_nova_imagem)
 			questionar_nova_imagem.iniciar(CPastas.Atividades.NovaImagem)
 			questionar_nova_imagem.NovaImagem.connect(_adicionar.bind(1))
 			questionar_nova_imagem.Cancelar.connect(_adicionar.bind(2))
 	elif etapa == 1:
-		if self.get_parent().ModoImagem:
-			pass
+		if resposta.right(1) == "/":
+			var leitor: DirAccess = DirAccess.open(resposta)
+			leitor.list_dir_begin()
+			var proximo_item: String = leitor.get_next()
+			while proximo_item != "":
+				if proximo_item.right(5) == ".jpeg" or [".jpg",".png"].has(proximo_item.right(4)):
+					Principal.Imagens.append([proximo_item,[]])
+				proximo_item = leitor.get_next()
 		else:
-			if resposta.right(1) == "/":
-				var leitor: DirAccess = DirAccess.open(resposta)
-				leitor.list_dir_begin()
-				var proximo_item: String = leitor.get_next()
-				while proximo_item != "":
-					if proximo_item.right(5) == ".jpeg" or [".jpg",".png"].has(proximo_item.right(4)):
-						self.get_parent().Imagens.append([proximo_item,[]])
-					proximo_item = leitor.get_next()
-			else:
-				self.get_parent().Imagens.append([resposta,[]])
-			self.get_parent().ListaDeImagens.atualizar(Digitacao.text)
-			self.get_parent().ListaDeRotulos.atualizar(Digitacao.text)
-		if self.get_parent().ModoImagem and self.get_parent().ItemAtual == []:
-			self.get_parent().ItemAtual = self.get_parent().Imagens[0]
-			self.get_parent().Exibidor.adicionar(self.get_parent().ItemAtual[0])
-		self.get_parent().Janelas.get_children()[0].fechar()
+			Principal.Imagens.append([resposta,[]])
+		Principal.ListaDeImagens.atualizar(Digitacao.text)
+		Principal.ListaDeRotulos.atualizar(Digitacao.text)
+		if Principal.ModoImagem and Principal.ItemAtual == []:
+			Principal.ItemAtual = Principal.Imagens[0]
+			Principal.Exibidor.adicionar(Principal.ItemAtual[0])
+		Principal.Janelas.get_children()[0].fechar()
 	elif etapa == 2:
-		self.get_parent().Janelas.get_children()[0].fechar()
+		Principal.Janelas.get_children()[0].fechar()
+
+# CONCLUIR ADICIONAR RÓTULO
+func _concluir_adicionar_rotulo(resposta: Array, erro: int) -> void:
+	if erro != 0:
+		Principal.Rotulos.append(resposta)
+		Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
+		Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
+	Principal.Janelas.get_children()[0].fechar()
 
 # ALTERAR VISUALIZAÇÃO
 func _visualizacao(modo: int) -> void:
-	var modo_anterior: int = self.get_parent().Visualizacao
+	var modo_anterior: int = Principal.Visualizacao
 	if modo_anterior == 0: _atualizar_cor(VerAmbos,0)
 	elif modo_anterior == 1: _atualizar_cor(VerMarcados,0)
 	elif modo_anterior == 2: _atualizar_cor(VerDesmarcados,0)
-	self.get_parent().Visualizacao = modo
+	Principal.Visualizacao = modo
 	if modo == 0: _atualizar_cor(VerAmbos,0)
 	elif modo == 1: _atualizar_cor(VerMarcados,0)
 	elif modo == 2: _atualizar_cor(VerDesmarcados,0)
-	self.get_parent().ListaDeImagens.atualizar(Digitacao.text)
-	self.get_parent().ListaDeRotulos.atualizar(Digitacao.text)
+	Principal.ListaDeImagens.atualizar(Digitacao.text)
+	Principal.ListaDeRotulos.atualizar(Digitacao.text)
 
 # SAIR
 func _sair(resposta: int, etapa: int) -> void:
 	if etapa == 0:
-		if self.get_parent().Janelas.get_child_count() > 0:
-			self.get_parent().Janelas.get_children()[0].fechar()
-		if self.get_parent().Arquivo == "":
+		if Principal.Janelas.get_child_count() > 0:
+			Principal.Janelas.get_children()[0].fechar()
+		if Principal.Arquivo == "":
 			get_tree().quit()
 		else:
-			var arquivo: CDados = ResourceLoader.load(self.get_parent().Arquivo)
-			if arquivo.Imagens == self.get_parent().Imagens and arquivo.Rotulos == self.get_parent().Rotulos:
+			var arquivo: CDados = ResourceLoader.load(Principal.Arquivo)
+			if arquivo.Imagens == Principal.Imagens and arquivo.Rotulos == Principal.Rotulos:
 				get_tree().quit()
 			else:
 				var questionar_saida: CPergunta = Pergunta.instantiate()
-				self.get_parent().Janelas.add_child(questionar_saida)
+				Principal.Janelas.add_child(questionar_saida)
 				questionar_saida.iniciar("Tem certeza de que deseja sair?",["Salvar e Sair","Cancelar","Sair Sem Salvar"])
 				questionar_saida.Resposta.connect(_sair.bind(1))
 	else:
-		if self.get_parent().Janelas.get_child_count() > 0:
-			self.get_parent().Janelas.get_children()[0].fechar()
+		if Principal.Janelas.get_child_count() > 0:
+			Principal.Janelas.get_children()[0].fechar()
 		if resposta == 0:
 			var novo_arquivo: CDados = CDados.new()
-			novo_arquivo.Imagens = self.get_parent().Imagens
-			novo_arquivo.Rotulos = self.get_parent().Rotulos
-			if self.get_parent().Arquivo != "":
-				ResourceSaver.save(novo_arquivo,self.get_parent().Arquivo)
+			novo_arquivo.Imagens = Principal.Imagens
+			novo_arquivo.Rotulos = Principal.Rotulos
+			if Principal.Arquivo != "":
+				ResourceSaver.save(novo_arquivo,Principal.Arquivo)
 				get_tree().quit()
 			else:
 				SalvarPreSair = true
@@ -402,4 +417,4 @@ func _sair(resposta: int, etapa: int) -> void:
 		elif resposta == 2:
 			get_tree().quit()
 		else:
-			self.get_parent().Janelas.get_children()[0].fechar()
+			Principal.Janelas.get_children()[0].fechar()

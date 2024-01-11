@@ -17,16 +17,7 @@ class_name CPrincipal
 @onready var Imagens: Array = []
 @onready var Rotulos: Array = []
 
-# IMAGENS = [IMAGEM1, IMAGEM2, IMAGEM3]
-# ...IMAGEM = [ARQUIVO, RÓTULOS]
-# ......ARQUIVO = "C:/Imagem.jpg"
-# ......RÓTULOS = ["Paisagens","Florestas"]
-
-# RÓTULOS = [RÓTULO1, RÓTULO2, RÓTULO3]
-# ...RÓTULO = [NOME, SUPERIOR]
-# ......NOME = "Florestas"
-# ......SUPERIOR = "Paisagens"
-
 # INICIAR
 func _ready() -> void:
 	Mouse.Principal = [self]
+	Botoes.iniciar()

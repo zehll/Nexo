@@ -2,30 +2,37 @@ extends ColorRect
 class_name CItemRotulo
 
 # ELEMENTOS DA CENA
+@onready var Principal: CPrincipal
 @onready var Nome: Label = $Nome
 @onready var Subtitulo: Label = $Subtitulo
 @onready var Apagar: TextureRect = $Apagar
 @onready var Editar: TextureRect = $Editar
 @onready var Adicionar: TextureRect = $Adicionar
+@onready var Pergunta: PackedScene = preload("res://Pergunta/Pergunta.tscn")
+@onready var NovoRotulo: PackedScene = preload("res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn")
 
 # VARIÁVEIS
-@onready var ModoImagem: bool
+@onready var Superior: String
+@onready var Superiores: Array
 @onready var Marcado: bool
 
 # INICIAR
-func iniciar(rotulo: String, superiores: Array, modo_imagem: bool, marcado: bool = true) -> void:
+func iniciar(rotulo: String, superiores: Array, marcado: bool = true) -> void:
+	Principal = Mouse.Principal[0]
 	Nome.text = rotulo
+	Superiores = superiores
 	if superiores == []:
+		Superior = "Origem"
 		Subtitulo.text = "Rótulo Original"
 	else:
+		Superior = superiores[0]
 		Subtitulo.text = superiores[0]
 		var contagem: int = 1
 		while contagem < superiores.size():
 			Subtitulo.text = Subtitulo.text + " > " + superiores[contagem]
 			contagem += 1
-	ModoImagem = modo_imagem
 	Marcado = marcado
-	if modo_imagem:
+	if Principal.ModoImagem:
 		if marcado:
 			Nome.self_modulate = Color(0.0,0.5,0.0,1.0)
 			Subtitulo.self_modulate = Color(0.0,0.4,0.0,1.0)
@@ -58,7 +65,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 	if botao == self:
 		if estado == 0:
 			self.color = Color(0.0,0.0,0.0,1.0)
-			if not ModoImagem:
+			if not Principal.ModoImagem:
 				Nome.self_modulate = Color(0.5,0.5,0.5,1.0)
 				Subtitulo.self_modulate = Color(0.4,0.4,0.4,1.0)
 			else:
@@ -69,7 +76,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 					Nome.self_modulate = Color(0.5,0.0,0.0,1.0)
 					Subtitulo.self_modulate = Color(0.4,0.0,0.0,1.0)
 		elif estado == 1:
-			if not ModoImagem:
+			if not Principal.ModoImagem:
 				self.color = Color(0.05,0.05,0.05,1.0)
 				Nome.self_modulate = Color(0.55,0.55,0.55,1.0)
 				Subtitulo.self_modulate = Color(0.45,0.45,0.45,1.0)
@@ -83,7 +90,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 					Nome.self_modulate = Color(0.55,0.0,0.0,1.0)
 					Subtitulo.self_modulate = Color(0.45,0.0,0.0,1.0)
 		elif estado == 2:
-			if not ModoImagem:
+			if not Principal.ModoImagem:
 				self.color = Color(0.1,0.1,0.1,1.0)
 				Nome.self_modulate = Color(0.6,0.6,0.6,1.0)
 				Subtitulo.self_modulate = Color(0.5,0.5,0.5,1.0)
@@ -99,7 +106,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 	elif [Apagar,Editar,Adicionar].has(botao):
 		if estado == 0:
 			self.color = Color(0.0,0.0,0.0,1.0)
-			if not ModoImagem:
+			if not Principal.ModoImagem:
 				Nome.self_modulate = Color(0.5,0.5,0.5,1.0)
 				Subtitulo.self_modulate = Color(0.4,0.4,0.4,1.0)
 				botao.self_modulate = Color(0.2,0.2,0.2,1.0)
@@ -113,7 +120,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 					Subtitulo.self_modulate = Color(0.4,0.0,0.0,1.0)
 					botao.self_modulate = Color(0.2,0.0,0.0,1.0)
 		elif estado == 1:
-			if not ModoImagem:
+			if not Principal.ModoImagem:
 				self.color = Color(0.05,0.05,0.05,1.0)
 				Nome.self_modulate = Color(0.55,0.55,0.55,1.0)
 				Subtitulo.self_modulate = Color(0.45,0.45,0.45,1.0)
@@ -130,7 +137,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 					Subtitulo.self_modulate = Color(0.45,0.0,0.0,1.0)
 					botao.self_modulate = Color(0.25,0.0,0.0,1.0)
 		elif estado == 2:
-			if not ModoImagem:
+			if not Principal.ModoImagem:
 				self.color = Color(0.05,0.05,0.05,1.0)
 				Nome.self_modulate = Color(0.55,0.55,0.55,1.0)
 				Subtitulo.self_modulate = Color(0.45,0.45,0.45,1.0)
@@ -149,10 +156,128 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # DETECTAR CLIQUE
 func _clique(botao: Node) -> void:
-	if botao == self: pass
-	elif botao == Apagar: pass
-	elif botao == Editar: pass
-	elif botao == Adicionar: pass
+	if botao == self: _selecionar()
+	elif botao == Apagar: _apagar(0,0)
+	elif botao == Editar: _adicionar_editar([],0,false)
+	elif botao == Adicionar: _adicionar_editar([],0,true)
+
+# SELECIONAR
+func _selecionar() -> void:
+	if Principal.ModoImagem:
+		if Marcado:
+			Principal.ItemAtual[1].erase(Nome.text)
+			Marcado = false
+			for item in Principal.ItemAtual[1]:
+				if _inferiores().has(item):
+					Principal.ItemAtual[1].erase(item)
+		else:
+			Principal.ItemAtual[1].append(Nome.text)
+			Marcado = true
+			for item in Superiores:
+				if not Principal.ItemAtual[1].has(item):
+					Principal.ItemAtual[1].append(item)
+		_atualizar_cor(self,0)
+		_atualizar_cor(Apagar,0)
+		_atualizar_cor(Editar,0)
+		_atualizar_cor(Adicionar,0)
+	else:
+		Principal.ItemAtual = [Nome.text,Superior]
+		Principal.Exibidor.zerar()
+		for imagem in Principal.Imagens:
+			if imagem[1].has(Nome.text):
+				Principal.Exibidor.adicionar(imagem[0])
+		Principal.Botoes.Digitacao.text = ""
+		Principal.ListaDeImagens.atualizar("")
+		Principal.ListaDeRotulos.atualizar("")
+
+# APAGAR
+func _apagar(resposta: int, etapa: int) -> void:
+	if etapa == 0:
+		var questionar_apagar: CPergunta = Pergunta.instantiate()
+		if Principal.Janelas.get_child_count() > 0:
+			Principal.Janelas.get_children()[0].fechar()
+		Principal.Janelas.add_child(questionar_apagar)
+		questionar_apagar.iniciar("Você tem certeza de que deseja apagar o rótulo?",["Sim","Não"])
+		questionar_apagar.Resposta.connect(_apagar.bind(1))
+	elif etapa == 1:
+		if resposta == 0:
+			var deletaveis: Array = [Nome.text]
+			if not Principal.ModoImagem and (deletaveis.has(Principal.ItemAtual[0]) or deletaveis.has(Principal.ItemAtual[1])):
+				Principal.ItemAtual = []
+				Principal.Exibidor.zerar()
+			for item in _inferiores():
+				deletaveis.append(item)
+			for imagem in Principal.Imagens:
+				for rotulo in imagem[1]:
+					if deletaveis.has(rotulo):
+						imagem[1].erase(rotulo)
+			for rotulo in Principal.Rotulos:
+				if deletaveis.has(rotulo[0]):
+					Principal.Rotulos.erase(rotulo)
+			Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
+			Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
+		Principal.Janelas.get_children()[0].fechar()
+
+# ADICIONAR OU EDITAR
+func _adicionar_editar(resposta: Array, etapa: int, adicionar: bool = true) -> void:
+	if etapa == 0:
+		var adicionar_editar: CNovoRotulo = NovoRotulo.instantiate()
+		if Principal.Janelas.get_child_count() > 0:
+			Principal.Janelas.get_children()[0].fechar()
+		Principal.Janelas.add_child(adicionar_editar)
+		if adicionar:
+			adicionar_editar.iniciar("")
+		else:
+			adicionar_editar.iniciar(Nome.text,true)
+		adicionar_editar.Cancelamento.connect(_adicionar_editar.bind(1))
+		adicionar_editar.NovoRotulo.connect(_adicionar_editar.bind(2))
+	elif etapa == 1:
+		Principal.Janelas.get_children()[0].fechar()
+	elif etapa == 2:
+		if resposta.size() == 3:
+			for imagem in Principal.Imagens:
+				var contagem: int = 0
+				var resolvido: bool = false
+				while contagem < imagem[1].size() and not resolvido:
+					if imagem[1][contagem] == Nome.text:
+						imagem[1][contagem] = resposta[0]
+						resolvido = true
+					contagem += 1
+			var contagem: int = 0
+			var resolvido: bool = false
+			while contagem < Principal.Rotulos.size() and not resolvido:
+				if Principal.Rotulos[contagem][0] == Nome.text:
+					Principal.Rotulos[contagem] = [resposta[0],resposta[1]]
+					resolvido = true
+				contagem += 1
+		else:
+			Principal.Rotulos.append(resposta)
+		Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
+		Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
+		Principal.Janelas.get_children()[0].fechar()
+
+# REUNIR TODOS OS INFERIORES
+func _inferiores():
+	var todos_os_inferiores: Array = [Nome.text]
+	var inferiores_imediatos: Array = [Nome.text]
+	while _inferiores_imediatos(inferiores_imediatos) != null:
+		for item in _inferiores_imediatos(inferiores_imediatos):
+			if not todos_os_inferiores.has(item):
+				todos_os_inferiores.append(item)
+		inferiores_imediatos = _inferiores_imediatos(inferiores_imediatos)
+	todos_os_inferiores.pop_front()
+	if todos_os_inferiores == []: return null
+	else: return todos_os_inferiores
+
+# OBTER TODOS OS INFERIORES IMEDIATOS DE UM CONJUNTO DE RÓTULOS
+func _inferiores_imediatos(grupo: Array):
+	var resposta: Array = []
+	for item in grupo:
+		for rotulo in Principal.Rotulos:
+			if rotulo[1] == item:
+				resposta.append(rotulo[0])
+	if resposta == []: return null
+	else: return resposta
 
 # FECHAR
 func fechar() -> void:

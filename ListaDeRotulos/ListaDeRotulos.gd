@@ -24,6 +24,7 @@ class_name CListaDeRotulos
 @onready var PosicaoNaJanela: float = 0.7
 @onready var RotulosValidos: Array = []
 @onready var Paginas: int = 0
+@onready var PaginaAtual: int = 0
 
 # INICIAR
 func _ready() -> void:
@@ -72,12 +73,12 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
-	if botao == EsquerdaTres: pass
-	elif botao == EsquerdaDois: pass
-	elif botao == EsquerdaUm: pass
-	elif botao == DireitaUm: pass
-	elif botao == DireitaDois: pass
-	elif botao == DireitaTres: pass
+	if botao == EsquerdaTres: _preencher_pagina(max(0,PaginaAtual - roundi(0.5 * Paginas)))
+	elif botao == EsquerdaDois: _preencher_pagina(max(0,PaginaAtual - roundi(0.1 * Paginas)))
+	elif botao == EsquerdaUm: _preencher_pagina(max(0,PaginaAtual - 1))
+	elif botao == DireitaUm: _preencher_pagina(max(0,PaginaAtual + 1))
+	elif botao == DireitaDois: _preencher_pagina(max(0,PaginaAtual + roundi(0.1 * Paginas)))
+	elif botao == DireitaTres: _preencher_pagina(max(0,PaginaAtual + roundi(0.5 * Paginas)))
 
 # PROCESSO CONTÍNUO
 func _physics_process(_delta: float) -> void:
@@ -112,6 +113,7 @@ func atualizar(busca: String) -> void:
 
 # PREENCHER PÁGINA
 func _preencher_pagina(pagina: int) -> void:
+	PaginaAtual = pagina
 	for item in Lista.get_children():
 		item.fechar()
 	var itens_cabiveis: int = floori(Lista.size.y / 45.0)
@@ -130,7 +132,7 @@ func _preencher_pagina(pagina: int) -> void:
 		var novo_rotulo: CItemRotulo = ItemRotulo.instantiate()
 		Lista.add_child(novo_rotulo)
 		if Principal.ModoImagem:
-			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ModoImagem,Principal.ItemAtual[1].has(rotulo_atual[0]))
+			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ItemAtual[1].has(rotulo_atual[0]))
 		else:
-			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ModoImagem)
+			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores)
 		contagem += 1

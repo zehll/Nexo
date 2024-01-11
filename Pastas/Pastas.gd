@@ -157,7 +157,6 @@ func _detectar_digitacao(texto: String) -> void:
 	if texto == "":
 		_botao_dois(false)
 	else:
-		var ja_existe: bool = false
 		var eh_pasta_com_imagens: bool = false
 		var eh_arquivo: bool = false
 		var eh_imagem: bool = false
@@ -166,7 +165,6 @@ func _detectar_digitacao(texto: String) -> void:
 		var proximo_item: String = leitor.get_next()
 		while proximo_item != "":
 			if proximo_item == texto:
-				ja_existe = true
 				if leitor.current_is_dir():
 					var segundo_leitor: DirAccess = DirAccess.open(PastaAtual + "/" + proximo_item)
 					segundo_leitor.list_dir_begin()

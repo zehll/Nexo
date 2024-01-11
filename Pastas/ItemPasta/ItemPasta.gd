@@ -62,18 +62,19 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
-	if not Selecionado:
-		Selecionado = true
-		self.color = Color(0.15,0.15,0.15,1.0)
-		Icone.self_modulate = Color(0.35,0.35,0.35,1.0)
-		Nome.self_modulate = Color(0.55,0.55,0.55,1.0)
-		UltimoClique = Time.get_ticks_msec()
-		emit_signal("Marcado",self)
-	else:
-		var momento_atual: int = Time.get_ticks_msec()
-		if momento_atual - UltimoClique < 400:
-			emit_signal("Confirmado",self,Nome.text)
-		UltimoClique = momento_atual
+	if botao == self:
+		if not Selecionado:
+			Selecionado = true
+			self.color = Color(0.15,0.15,0.15,1.0)
+			Icone.self_modulate = Color(0.35,0.35,0.35,1.0)
+			Nome.self_modulate = Color(0.55,0.55,0.55,1.0)
+			UltimoClique = Time.get_ticks_msec()
+			emit_signal("Marcado",self)
+		else:
+			var momento_atual: int = Time.get_ticks_msec()
+			if momento_atual - UltimoClique < 400:
+				emit_signal("Confirmado",self,Nome.text)
+			UltimoClique = momento_atual
 
 # FECHAR
 func fechar() -> void:

@@ -20,11 +20,11 @@ signal Cancelamento(nada: Array)
 @onready var FonteLista: LabelSettings = preload("res://Recursos/FonteResposta.tres")
 
 # VARIÁVEIS
-@onready var Editar: Array = []
+@onready var Editar: bool = false
 @onready var Grupo: String = "Sem Grupo"
 
 # INICIAR
-func iniciar(grupo: String = "") -> void:
+func iniciar(grupo: String = "", editar: bool = false) -> void:
 	Principal = Mouse.Principal[0]
 	if grupo != "":
 		Grupo = grupo
@@ -38,6 +38,7 @@ func iniciar(grupo: String = "") -> void:
 	for item in [self,Cancelar,Confirmar]:
 		item.mouse_entered.connect(Mouse.localizar.bind(item))
 		item.mouse_exited.connect(Mouse.localizar.bind(Mouse))
+	Editar = editar
 	Digitacao.text_changed.connect(_digitacao)
 	Mouse.Saiu.connect(_atualizar_cor.bind(0))
 	Mouse.Entrou.connect(_atualizar_cor.bind(1))
@@ -136,10 +137,10 @@ func _clique(botao: Node) -> void:
 	if botao == Confirmar:
 		if Grupo == "Sem Grupo":
 			Grupo = "Origem"
-		if Editar == []:
-			emit_signal("NovoRotulo",[Digitacao.text,Grupo])
+		if Editar:
+			emit_signal("NovoRotulo",[Digitacao.text,Grupo,0])
 		else:
-			emit_signal("NovoRotulo",[Digitacao.text,Grupo,Editar])
+			emit_signal("NovoRotulo",[Digitacao.text,Grupo])
 	elif [self,Cancelar].has(botao):
 		emit_signal("Cancelamento",[])
 	elif Lista.get_children().has(botao):
