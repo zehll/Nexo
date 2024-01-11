@@ -1,0 +1,133 @@
+[gd_scene load_steps=6 format=3 uid="uid://cmnkgruyu14uk"]
+
+[ext_resource type="Script" path="res://ListaDeRotulos/NovoRotulo/NovoRotulo.gd" id="1_uddbm"]
+[ext_resource type="LabelSettings" uid="uid://byj643edjv50e" path="res://Recursos/FontePergunta.tres" id="2_6l33d"]
+[ext_resource type="FontFile" uid="uid://cnl7nuclp261o" path="res://Fontes/RobotoSlabMedia.ttf" id="3_xf1el"]
+[ext_resource type="StyleBox" uid="uid://coofeg4688ju8" path="res://Recursos/Digitacao.tres" id="4_kcilm"]
+[ext_resource type="LabelSettings" uid="uid://c2jmpsw8wqf73" path="res://Recursos/FonteResposta.tres" id="5_armkp"]
+
+[node name="Fundo" type="ColorRect"]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 1149.0
+offset_bottom = 645.0
+color = Color(0, 0, 0, 0.5)
+script = ExtResource("1_uddbm")
+
+[node name="Bordas" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 310.0
+offset_top = 33.0
+offset_right = 840.0
+offset_bottom = 572.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Janela" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 527.0
+offset_bottom = 499.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextoSuperior" type="Label" parent="Bordas/Janela"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 523.0
+offset_bottom = 43.0
+text = "Adicionar Novo Rótulo"
+label_settings = ExtResource("2_6l33d")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="FundoDigitacao" type="ColorRect" parent="Bordas/Janela"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 47.0
+offset_right = 512.0
+offset_bottom = 78.0
+mouse_filter = 2
+color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="Digitacao" type="LineEdit" parent="Bordas/Janela/FundoDigitacao"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 6.0
+offset_right = 495.0
+offset_bottom = 25.0
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_colors/font_placeholder_color = Color(0.3, 0.3, 0.3, 1)
+theme_override_fonts/font = ExtResource("3_xf1el")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = ExtResource("4_kcilm")
+theme_override_styles/focus = ExtResource("4_kcilm")
+theme_override_styles/read_only = ExtResource("4_kcilm")
+placeholder_text = "(Digite aqui o nome do rótulo)"
+alignment = 1
+caret_blink = true
+
+[node name="FundoLista" type="ColorRect" parent="Bordas/Janela"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 88.0
+offset_right = 512.0
+offset_bottom = 485.0
+mouse_filter = 2
+color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="BarraDeRolagem" type="ScrollContainer" parent="Bordas/Janela/FundoLista"]
+layout_mode = 0
+offset_right = 500.0
+offset_bottom = 394.0
+mouse_filter = 2
+horizontal_scroll_mode = 3
+
+[node name="Lista" type="VBoxContainer" parent="Bordas/Janela/FundoLista/BarraDeRolagem"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Cancelar" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 502.0
+offset_right = 256.0
+offset_bottom = 535.0
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Texto" type="Label" parent="Bordas/Cancelar"]
+self_modulate = Color(0.4, 0.4, 0.4, 1)
+layout_mode = 0
+offset_right = 253.0
+offset_bottom = 34.0
+text = "Cancelar"
+label_settings = ExtResource("5_armkp")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Confirmar" type="ColorRect" parent="Bordas"]
+layout_mode = 0
+offset_left = 259.0
+offset_top = 502.0
+offset_right = 526.0
+offset_bottom = 535.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Texto" type="Label" parent="Bordas/Confirmar"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+layout_mode = 0
+offset_right = 265.0
+offset_bottom = 34.0
+text = "Confirmar"
+label_settings = ExtResource("5_armkp")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3

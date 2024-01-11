@@ -1,5 +1,6 @@
-res://Pastas/Pastas.tscn
+res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn
 res://Recursos/FonteResposta.tres
 res://Recursos/FontePergunta.tres
-res://Botoes/Botoes.gd
-res://Botoes/Botoes.tscn
+res://ListaDeRotulos/NovoRotulo/NovoRotulo.gd
+res://ListaDeRotulos/ListaDeRotulos.tscn
+res://ListaDeRotulos/ItemRotulo/ItemRotulo.tscn
