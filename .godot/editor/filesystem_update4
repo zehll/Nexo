@@ -1,6 +1,5 @@
-res://Principal/Principal.tscn
+res://Pastas/Pastas.tscn
 res://Recursos/FonteResposta.tres
 res://Recursos/FontePergunta.tres
 res://Botoes/Botoes.gd
-res://Pastas/Pastas.gd
-res://Pastas/Pastas.tscn
+res://Botoes/Botoes.tscn

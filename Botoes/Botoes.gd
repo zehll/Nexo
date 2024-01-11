@@ -42,6 +42,7 @@ class_name CBotoes
 # VARIÁVEIS
 @onready var SalvarPreNovo: bool = false
 @onready var SalvarPreSair: bool = false
+@onready var UltimosIndices: Array = []
 
 # INICIAR
 func _ready() -> void:
@@ -77,24 +78,54 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 		elif estado == 2:
 			botao.color = Color(0.15,0.15,0.15,1.0)
 			botao.get_children()[0].self_modulate = Color(0.36,0.35,0.35,1.0)
+	elif [VerAmbos,VerMarcados,VerDesmarcados].has(botao):
+		if self.get_parent().Visualizacao == 0:
+			if estado == 0:
+				if botao == VerAmbos: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
+				else: botao.self_modulate = Color(0.1,0.1,0.1,1.0)
+			elif estado == 1:
+				if botao == VerAmbos: botao.self_modulate = Color(0.25,0.25,0.25,1.0)
+				else: botao.self_modulate = Color(0.15,0.15,0.15,1.0)
+			elif estado == 2:
+				if botao == VerAmbos: botao.self_modulate = Color(0.3,0.3,0.3,1.0)
+				else: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
+		elif self.get_parent().Visualizacao == 1:
+			if estado == 0:
+				if botao == VerMarcados: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
+				else: botao.self_modulate = Color(0.1,0.1,0.1,1.0)
+			elif estado == 1:
+				if botao == VerMarcados: botao.self_modulate = Color(0.25,0.25,0.25,1.0)
+				else: botao.self_modulate = Color(0.15,0.15,0.15,1.0)
+			elif estado == 2:
+				if botao == VerMarcados: botao.self_modulate = Color(0.3,0.3,0.3,1.0)
+				else: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
+		elif self.get_parent().Visualizacao == 2:
+			if estado == 0:
+				if botao == VerDesmarcados: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
+				else: botao.self_modulate = Color(0.1,0.1,0.1,1.0)
+			elif estado == 1:
+				if botao == VerDesmarcados: botao.self_modulate = Color(0.25,0.25,0.25,1.0)
+				else: botao.self_modulate = Color(0.15,0.15,0.15,1.0)
+			elif estado == 2:
+				if botao == VerDesmarcados: botao.self_modulate = Color(0.3,0.3,0.3,1.0)
+				else: botao.self_modulate = Color(0.2,0.2,0.2,1.0)
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
 	SalvarPreNovo = false
 	SalvarPreSair = false
 	if botao == Novo: _novo(0,0)
-	elif botao == Abrir: pass
+	elif botao == Abrir: _abrir("",0)
 	elif botao == Salvar: _salvar("",0)
-	elif botao == Modo: pass
-	elif botao == Voltar: pass
-	elif botao == Esquerda: pass
-	elif botao == Direita: pass
-	elif botao == Sorteio: pass
+	elif botao == Modo: _modo()
+	elif botao == Voltar: _mover(-1)
+	elif botao == Esquerda: _mover(0)
+	elif botao == Direita: _mover(1)
+	elif botao == Sorteio: _mover(2)
 	elif botao == Adicionar: _adicionar("",0)
-	elif botao == VerAmbos: pass
-	elif botao == VerMarcados: pass
-	elif botao == VerDesmarcados: pass
-	elif botao == IconeBuscar: pass
+	elif botao == VerAmbos: _visualizacao(0)
+	elif botao == VerMarcados: _visualizacao(1)
+	elif botao == VerDesmarcados: _visualizacao(2)
 	elif botao == TelaCheia: _alterar_janela(2)
 	elif botao == Minimizar: _alterar_janela(0)
 	elif botao == Maximizar: _alterar_janela(1)
@@ -218,6 +249,78 @@ func _salvar(resposta: String, etapa: int) -> void:
 		SalvarPreSair = false
 		self.get_parent().Janelas.get_children()[0].fechar()
 
+# ALTERAR MODO
+func _modo() -> void:
+	self.get_parent().ModoImagem = not self.get_parent().ModoImagem
+	UltimosIndices = [0]
+	self.get_parent().Exibidor.zerar()
+	if self.get_parent().ModoImagem:
+		self.get_parent().ItemAtual = self.get_parent().Imagens[0]
+		self.get_parent().Exibidor.adicionar(self.get_parent().ItemAtual[0])
+	else:
+		self.get_parent().ItemAtual = self.get_parent().Rotulos[0]
+		for imagem in self.get_parent().Imagens:
+			if imagem[1].has(self.get_parent().ItemAtual[0]):
+				self.get_parent().Exibidor.adicionar(imagem[0])
+	Digitacao.text = ""
+	self.get_parent().ListaDeImagens.atualizar("")
+	self.get_parent().ListaDeRotulos.atualizar("")
+
+# MOVER
+func _mover(direcao: int) -> void:
+	if direcao == -1:
+		if UltimosIndices.size() > 1:
+			var indice_atual: int = UltimosIndices.pop_back()
+			self.get_parent().Exibidor.zerar()
+			if self.get_parent().ModoImagem:
+				self.get_parent().ItemAtual = self.get_parent().Imagens[indice_atual]
+				self.get_parent().Exibidor.adicionar(self.get_parent().ItemAtual[0])
+			else:
+				self.get_parent().ItemAtual = self.get_parent().Rotulos[indice_atual]
+				for imagem in self.get_parent().Imagens:
+					if imagem[1].has(self.get_parent().ItemAtual[0]):
+						self.get_parent().Exibidor.adicionar(imagem[0])
+	else:
+		var modo_imagem: bool = self.get_parent().ModoImagem
+		var mais_de_um: bool = false
+		if modo_imagem and self.get_parent().Imagens.size() > 1: mais_de_um = true
+		elif not modo_imagem and self.get_parent().Rotulos.size() > 2: mais_de_um = true
+		if mais_de_um:
+			var indice_atual: int = 0
+			if modo_imagem:
+				while self.get_parent().Imagens[indice_atual] != self.get_parent().ItemAtual: indice_atual += 1
+			else:
+				while self.get_parent().Rotulos[indice_atual] != self.get_parent().ItemAtual: indice_atual += 1
+			if direcao == 0:
+				indice_atual -= 1
+				if indice_atual < 0:
+					if modo_imagem: indice_atual = self.get_parent().Imagens.size() - 1
+					else: indice_atual = self.get_parent().Rotulos.size() - 1
+			elif direcao == 1:
+				indice_atual += 1
+				if modo_imagem and indice_atual >= self.get_parent().Imagens.size(): indice_atual = 0
+				elif not modo_imagem and indice_atual >= self.get_parent().Rotulos.size(): indice_atual = 0
+			elif direcao == 2:
+				var sorteio: RandomNumberGenerator = RandomNumberGenerator.new()
+				var novo_indice: int
+				if modo_imagem: novo_indice = sorteio.randi_range(0,self.get_parent().Imagens.size() - 1)
+				else: novo_indice = sorteio.randi_range(0,self.get_parent().Rotulos.size() - 1)
+				while novo_indice == indice_atual:
+					sorteio.randomize()
+					if modo_imagem: novo_indice = sorteio.randi_range(0,self.get_parent().Imagens.size() - 1)
+					else: novo_indice = sorteio.randi_range(0,self.get_parent().Rotulos.size() - 1)
+				indice_atual = novo_indice
+			UltimosIndices.push_back(indice_atual)
+			self.get_parent().Exibidor.zerar()
+			if modo_imagem:
+				self.get_parent().ItemAtual = self.get_parent().Imagens[indice_atual]
+				self.get_parent().Exibidor.adicionar(self.get_parent().ItemAtual[0])
+			else:
+				self.get_parent().ItemAtual = self.get_parent().Rotulos[indice_atual]
+				for imagem in self.get_parent().Imagens:
+					if imagem[1].has(self.get_parent().ItemAtual[0]):
+						self.get_parent().Exibidor.adicionar(imagem[0])
+
 # ADICIONAR
 func _adicionar(resposta: String, etapa: int) -> void:
 	if etapa == 0:
@@ -253,6 +356,19 @@ func _adicionar(resposta: String, etapa: int) -> void:
 		self.get_parent().Janelas.get_children()[0].fechar()
 	elif etapa == 2:
 		self.get_parent().Janelas.get_children()[0].fechar()
+
+# ALTERAR VISUALIZAÇÃO
+func _visualizacao(modo: int) -> void:
+	var modo_anterior: int = self.get_parent().Visualizacao
+	if modo_anterior == 0: _atualizar_cor(VerAmbos,0)
+	elif modo_anterior == 1: _atualizar_cor(VerMarcados,0)
+	elif modo_anterior == 2: _atualizar_cor(VerDesmarcados,0)
+	self.get_parent().Visualizacao = modo
+	if modo == 0: _atualizar_cor(VerAmbos,0)
+	elif modo == 1: _atualizar_cor(VerMarcados,0)
+	elif modo == 2: _atualizar_cor(VerDesmarcados,0)
+	self.get_parent().ListaDeImagens.atualizar(Digitacao.text)
+	self.get_parent().ListaDeRotulos.atualizar(Digitacao.text)
 
 # SAIR
 func _sair(resposta: int, etapa: int) -> void:
