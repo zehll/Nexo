@@ -1,9 +1,9 @@
 extends ColorRect
 class_name CPastas
-signal Cancelar
+signal Cancelar(nada: String)
 signal Abrir(arquivo: String)
 signal Salvar(arquivo: String)
-signal NovaImagem(pasta: bool, arquivo: String)
+signal NovaImagem(arquivo: String)
 
 # LISTAS
 enum Atividades {Abrir,Salvar,NovaImagem}
@@ -184,7 +184,7 @@ func _detectar_digitacao(texto: String) -> void:
 		if Atividade == Atividades.Abrir:
 			_botao_dois(eh_arquivo)
 		elif Atividade == Atividades.Salvar:
-			_botao_dois(texto.count(".") == 0 or eh_arquivo)
+			_botao_dois(texto.count(".") == 0 or eh_arquivo or texto.right(5) == ".tres")
 		else:
 			_botao_dois(eh_imagem or eh_pasta_com_imagens)
 
@@ -223,7 +223,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
-	if [self,Botao1].has(botao): emit_signal("Cancelar")
+	if [self,Botao1].has(botao): emit_signal("Cancelar","")
 	elif botao == Voltar: _voltar()
 	elif botao == Botao2: _confirmar()
 
@@ -240,7 +240,7 @@ func _confirmar() -> void:
 	if Atividade == Atividades.Abrir: emit_signal("Abrir",PastaAtual + texto)
 	elif Atividade == Atividades.Salvar: emit_signal("Salvar",PastaAtual + texto)
 	elif Atividade == Atividades.NovaImagem:
-		if texto.right(5) == ".jpeg" or [".png",".jpg"].has(texto.right(4)): emit_signal("NovaImagem",false,texto)
+		if texto.right(5) == ".jpeg" or [".png",".jpg"].has(texto.right(4)): emit_signal("NovaImagem",texto)
 		else: emit_signal("NovaImagem",true,PastaAtual + texto + "/")
 
 # FECHAR

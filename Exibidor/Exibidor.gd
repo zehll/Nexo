@@ -159,3 +159,13 @@ func _reposicionar(tamanho_medio: Vector2) -> void:
 	var escala_final: float = min(escala_vertical,escala_horizontal)
 	Origem.position = self.size / 2.0
 	Origem.scale = Vector2(escala_final, escala_final)
+
+# ZERAR
+func zerar() -> void:
+	for item in Tabela.get_children():
+		Tabela.remove_child(item)
+		item.queue_free()
+	Tamanho = Vector2(100.0,100.0)
+	Origem.scale = Vector2(1.0,1.0)
+	Origem.position = self.size / 2.0
+	Tabela.position = Vector2(-50.0,-50.0)
