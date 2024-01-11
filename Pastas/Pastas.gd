@@ -74,12 +74,13 @@ func _atualizar_tamanho() -> void:
 	var tamanho_da_janela: Vector2 = Vector2(float(get_window().size.x),float(get_window().size.y))
 	self.size = tamanho_da_janela - Vector2(6.0,6.0)
 	Bordas.size = Vector2(0.6 * tamanho_da_janela.x,0.9 * tamanho_da_janela.y)
+	Bordas.position = Vector2(0.2 * tamanho_da_janela.x,0.05 * tamanho_da_janela.y)
 	FaixaSuperior.size.x = Bordas.size.x - 34.0
 	TextoFaixaSuperior.size.x = FaixaSuperior.size.x
 	Janela.size = Vector2(Bordas.size.x - 6.0,Bordas.size.y - 95.0)
 	BarraDeRolagem.size = Janela.size
+	Grade.columns = floori((Janela.size.x - 8.0) / 80.0)
 	Grade.size = Vector2(Janela.size.x - 8.0,Janela.size.y)
-	Grade.columns = floori(Grade.size.x / 80.0)
 	FaixaInferior.size.x = Bordas.size.x - 6.0
 	FaixaInferior.position.y = Bordas.size.y - 61.0
 	Digitacao.size.x = FaixaInferior.size.x - 8.0
@@ -97,11 +98,11 @@ func _botao_dois(ativo: bool) -> void:
 	if ativo:
 		Botao2.mouse_filter = Control.MOUSE_FILTER_STOP
 		Botao2.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		Botao2.self_modulate = Color(0.4,0.4,0.4,1.0)
+		TextoBotao2.self_modulate = Color(0.4,0.4,0.4,1.0)
 	else:
 		Botao2.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		Botao2.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		Botao2.self_modulate = Color(0.2,0.2,0.2,1.0)
+		TextoBotao2.self_modulate = Color(0.2,0.2,0.2,1.0)
 
 # CARREGAR PASTA
 func _carregar(pasta: String) -> void:
@@ -139,6 +140,7 @@ func _carregar(pasta: String) -> void:
 # DETECTAR SELEÇÃO
 func _detectar_selecao(nome: String) -> void:
 	Digitacao.text = nome
+	_detectar_digitacao(nome)
 
 # DETECTAR ESCOLHA
 func _detectar_escolha(botao: CItemPasta, nome: String) -> void:
@@ -157,6 +159,10 @@ func _detectar_digitacao(texto: String) -> void:
 	if texto == "":
 		_botao_dois(false)
 	else:
+		for item in Grade.get_children():
+			if item.Nome.text != texto:
+				item.Selecionado = false
+				item.atualizar_cor(item,0)
 		var eh_pasta_com_imagens: bool = false
 		var eh_arquivo: bool = false
 		var eh_imagem: bool = false
@@ -230,7 +236,7 @@ func _voltar() -> void:
 	if PastaAtual.count("/") != 1:
 		var pasta_desmembrada: PackedStringArray = PastaAtual.left(-1).split("/")
 		pasta_desmembrada.remove_at(pasta_desmembrada.size() - 1)
-		_carregar("/".join(pasta_desmembrada))
+		_carregar("/".join(pasta_desmembrada) + "/")
 
 # CONFIRMAR
 func _confirmar() -> void:
@@ -238,8 +244,8 @@ func _confirmar() -> void:
 	if Atividade == Atividades.Abrir: emit_signal("Abrir",PastaAtual + texto)
 	elif Atividade == Atividades.Salvar: emit_signal("Salvar",PastaAtual + texto)
 	elif Atividade == Atividades.NovaImagem:
-		if texto.right(5) == ".jpeg" or [".png",".jpg"].has(texto.right(4)): emit_signal("NovaImagem",texto)
-		else: emit_signal("NovaImagem",true,PastaAtual + texto + "/")
+		if texto.right(5) == ".jpeg" or [".png",".jpg"].has(texto.right(4)): emit_signal("NovaImagem",PastaAtual + "/" + texto)
+		else: emit_signal("NovaImagem",PastaAtual + texto + "/")
 
 # FECHAR
 func fechar() -> void:

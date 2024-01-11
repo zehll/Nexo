@@ -25,13 +25,13 @@ func iniciar(nome: String, tipo: int) -> void:
 		Icone.texture = load("res://Icones/Imagem.png")
 	self.mouse_entered.connect(Mouse.localizar.bind(self))
 	self.mouse_exited.connect(Mouse.localizar.bind(Mouse))
-	Mouse.Saiu.connect(_atualizar_cor.bind(0))
-	Mouse.Entrou.connect(_atualizar_cor.bind(1))
-	Mouse.IniciouClique.connect(_atualizar_cor.bind(2))
+	Mouse.Saiu.connect(atualizar_cor.bind(0))
+	Mouse.Entrou.connect(atualizar_cor.bind(1))
+	Mouse.IniciouClique.connect(atualizar_cor.bind(2))
 	Mouse.CliqueValido.connect(_clique)
 
 # ATUALIZAR COR
-func _atualizar_cor(botao: Node, estado: int) -> void:
+func atualizar_cor(botao: Node, estado: int) -> void:
 	if botao == self:
 		if Selecionado:
 			if estado == 0:
@@ -69,7 +69,7 @@ func _clique(botao: Node) -> void:
 			Icone.self_modulate = Color(0.35,0.35,0.35,1.0)
 			Nome.self_modulate = Color(0.55,0.55,0.55,1.0)
 			UltimoClique = Time.get_ticks_msec()
-			emit_signal("Marcado",self)
+			emit_signal("Marcado",Nome.text)
 		else:
 			var momento_atual: int = Time.get_ticks_msec()
 			if momento_atual - UltimoClique < 400:
@@ -81,12 +81,13 @@ func fechar() -> void:
 	for item in self.get_children():
 		self.remove_child(item)
 		item.queue_free()
-	Mouse.localizar(Mouse)
+	if Mouse.LocalValido is CItemPasta:
+		Mouse.localizar(Mouse)
 	self.disconnect("mouse_entered",Mouse.localizar)
 	self.disconnect("mouse_exited",Mouse.localizar)
-	Mouse.disconnect("Saiu",_atualizar_cor)
-	Mouse.disconnect("Entrou",_atualizar_cor)
-	Mouse.disconnect("IniciouClique",_atualizar_cor)
+	Mouse.disconnect("Saiu",atualizar_cor)
+	Mouse.disconnect("Entrou",atualizar_cor)
+	Mouse.disconnect("IniciouClique",atualizar_cor)
 	Mouse.disconnect("CliqueValido",_clique)
 	self.get_parent().remove_child(self)
 	self.queue_free()

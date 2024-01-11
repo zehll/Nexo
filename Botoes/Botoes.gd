@@ -40,6 +40,8 @@ class_name CBotoes
 @onready var Pergunta: PackedScene = preload("res://Pergunta/Pergunta.tscn")
 @onready var Pastas: PackedScene = preload("res://Pastas/Pastas.tscn")
 @onready var NovoRotulo: PackedScene = preload("res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn")
+@onready var TexturaImagem: Texture2D = preload("res://Icones/Imagem.png")
+@onready var TexturaRotulo: Texture2D = preload("res://Icones/Rotulo.png")
 
 # VARIÁVEIS
 @onready var SalvarPreNovo: bool = false
@@ -259,13 +261,17 @@ func _modo() -> void:
 	UltimosIndices = [0]
 	Principal.Exibidor.zerar()
 	if Principal.ModoImagem:
-		Principal.ItemAtual = Principal.Imagens[0]
-		Principal.Exibidor.adicionar(Principal.ItemAtual[0])
+		IconeModo.texture = TexturaImagem
+		if Principal.Imagens.size() > 0:
+			Principal.ItemAtual = Principal.Imagens[0]
+			Principal.Exibidor.adicionar(Principal.ItemAtual[0])
 	else:
-		Principal.ItemAtual = Principal.Rotulos[0]
-		for imagem in Principal.Imagens:
-			if imagem[1].has(Principal.ItemAtual[0]):
-				Principal.Exibidor.adicionar(imagem[0])
+		IconeModo.texture = TexturaRotulo
+		if Principal.Rotulos.size() > 0:
+			Principal.ItemAtual = Principal.Rotulos[0]
+			for imagem in Principal.Imagens:
+				if imagem[1].has(Principal.ItemAtual[0]):
+					Principal.Exibidor.adicionar(imagem[0])
 	Digitacao.text = ""
 	Principal.ListaDeImagens.atualizar("")
 	Principal.ListaDeRotulos.atualizar("")
@@ -351,7 +357,7 @@ func _adicionar(resposta: String, etapa: int) -> void:
 			var proximo_item: String = leitor.get_next()
 			while proximo_item != "":
 				if proximo_item.right(5) == ".jpeg" or [".jpg",".png"].has(proximo_item.right(4)):
-					Principal.Imagens.append([proximo_item,[]])
+					Principal.Imagens.append([resposta + "/" + proximo_item,[]])
 				proximo_item = leitor.get_next()
 		else:
 			Principal.Imagens.append([resposta,[]])

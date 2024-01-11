@@ -125,6 +125,9 @@ func _preencher_pagina(pagina: int) -> void:
 		if Principal.ModoImagem:
 			novo_item.iniciar(imagem_atual[0],Principal.ModoImagem)
 		else:
-			novo_item.iniciar(imagem_atual[0],Principal.ModoImagem,imagem_atual[1].has(Principal.ItemAtual[0]))
+			if Principal.ItemAtual != []:
+				novo_item.iniciar(imagem_atual[0],Principal.ModoImagem,imagem_atual[1].has(Principal.ItemAtual[0]))
+			else:
+				novo_item.iniciar(imagem_atual[0],Principal.ModoImagem,false)
 		indice_atual += 1
 		contagem += 1

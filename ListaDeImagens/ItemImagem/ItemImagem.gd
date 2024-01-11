@@ -127,7 +127,6 @@ func _clique(botao: Node) -> void:
 
 # FECHAR
 func fechar() -> void:
-	get_viewport().disconnect("size_changed",atualizar_tamanho)
 	Mouse.disconnect("Saiu",_atualizar_cor)
 	Mouse.disconnect("Entrou",_atualizar_cor)
 	Mouse.disconnect("IniciouClique",_atualizar_cor)
