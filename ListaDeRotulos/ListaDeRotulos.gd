@@ -73,12 +73,13 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
-	if botao == EsquerdaTres: _preencher_pagina(max(0,PaginaAtual - roundi(0.5 * Paginas)))
-	elif botao == EsquerdaDois: _preencher_pagina(max(0,PaginaAtual - roundi(0.1 * Paginas)))
-	elif botao == EsquerdaUm: _preencher_pagina(max(0,PaginaAtual - 1))
-	elif botao == DireitaUm: _preencher_pagina(max(0,PaginaAtual + 1))
-	elif botao == DireitaDois: _preencher_pagina(max(0,PaginaAtual + roundi(0.1 * Paginas)))
-	elif botao == DireitaTres: _preencher_pagina(max(0,PaginaAtual + roundi(0.5 * Paginas)))
+	if botao == EsquerdaTres: _preencher_pagina(PaginaAtual - roundi(0.5 * Paginas))
+	elif botao == EsquerdaDois: _preencher_pagina(PaginaAtual - roundi(0.1 * Paginas))
+	elif botao == EsquerdaUm: _preencher_pagina(PaginaAtual - 1)
+	elif botao == DireitaUm: _preencher_pagina(PaginaAtual + 1)
+	elif botao == DireitaDois: _preencher_pagina(PaginaAtual + roundi(0.1 * Paginas))
+	elif botao == DireitaTres: _preencher_pagina(PaginaAtual + roundi(0.5 * Paginas))
+	Mouse.localizar(botao)
 
 # PROCESSO CONTÍNUO
 func _physics_process(_delta: float) -> void:
@@ -113,17 +114,17 @@ func atualizar(busca: String) -> void:
 
 # PREENCHER PÁGINA
 func _preencher_pagina(pagina: int) -> void:
-	PaginaAtual = pagina
 	for item in Lista.get_children():
 		item.fechar()
-	var itens_cabiveis: int = floori(Lista.size.y / 45.0)
-	Paginas = ceili(float(RotulosValidos.size()) / float(itens_cabiveis))
+	var itens_cabiveis: int = floori(Lista.size.y / 48.0)
+	Paginas = floori(float(RotulosValidos.size()) / float(itens_cabiveis))
+	PaginaAtual = clampi(pagina,0,Paginas)
 	var contagem: int = 0
-	var indice_atual: int = pagina * itens_cabiveis
-	while contagem < min(itens_cabiveis,RotulosValidos.size()):
-		var rotulo_atual: Array = RotulosValidos[indice_atual]
+	var indice_atual: int = PaginaAtual * itens_cabiveis
+	while contagem < min(itens_cabiveis,RotulosValidos.size() - 1):
+		var rotulo_atual: Array = RotulosValidos[min(indice_atual,RotulosValidos.size() - 1)]
 		var todos_os_superiores: Array = []
-		var superior_atual: String = RotulosValidos[indice_atual][1]
+		var superior_atual: String = RotulosValidos[min(indice_atual,RotulosValidos.size() - 1)][1]
 		while superior_atual != "Origem":
 			todos_os_superiores.append(superior_atual)
 			for item in Principal.Rotulos:

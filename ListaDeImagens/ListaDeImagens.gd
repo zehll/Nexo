@@ -46,6 +46,7 @@ func _atualizar_tamanho() -> void:
 	Margem.position.x = max(135.0,PosicaoNaJanela * tamanho_da_janela.x)
 	Fundo.size = Vector2(Margem.position.x - 3.0,tamanho_da_janela.y - 33.0)
 	Lista.size = Vector2(Fundo.size.x,Fundo.size.y - 33.0)
+	_preencher_pagina(PaginaAtual)
 	var largura_dos_botoes: float = (Fundo.size.x - 15.0) / 6.0
 	var posicao_x_dos_botoes: int = 0
 	for item in [EsquerdaTres,EsquerdaDois,EsquerdaUm,DireitaUm,DireitaDois,DireitaTres]:
@@ -72,12 +73,13 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
-	if botao == EsquerdaTres: _preencher_pagina(max(0,PaginaAtual - roundi(0.5 * Paginas)))
-	elif botao == EsquerdaDois: _preencher_pagina(max(0,PaginaAtual - roundi(0.1 * Paginas)))
-	elif botao == EsquerdaUm: _preencher_pagina(max(0,PaginaAtual - 1))
-	elif botao == DireitaUm: _preencher_pagina(max(0,PaginaAtual + 1))
-	elif botao == DireitaDois: _preencher_pagina(max(0,PaginaAtual + roundi(0.1 * Paginas)))
-	elif botao == DireitaTres: _preencher_pagina(max(0,PaginaAtual + roundi(0.5 * Paginas)))
+	if botao == EsquerdaTres: _preencher_pagina(PaginaAtual - roundi(0.5 * Paginas))
+	elif botao == EsquerdaDois: _preencher_pagina(PaginaAtual - roundi(0.1 * Paginas))
+	elif botao == EsquerdaUm: _preencher_pagina(PaginaAtual - 1)
+	elif botao == DireitaUm: _preencher_pagina(PaginaAtual + 1)
+	elif botao == DireitaDois: _preencher_pagina(PaginaAtual + roundi(0.1 * Paginas))
+	elif botao == DireitaTres: _preencher_pagina(PaginaAtual + roundi(0.5 * Paginas))
+	Mouse.localizar(botao)
 
 # PROCESSO CONTÍNUO
 func _physics_process(_delta: float) -> void:
@@ -111,16 +113,16 @@ func atualizar(busca: String) -> void:
 
 # PREENCHER PÁGINA
 func _preencher_pagina(pagina: int) -> void:
-	PaginaAtual = pagina
 	for item in Lista.get_children():
 		item.fechar()
-	var itens_cabiveis: int = floori(Lista.size.y / 30.0)
-	Paginas = ceili(float(ImagensValidas.size()) / float(itens_cabiveis))
+	var itens_cabiveis: int = floori(Lista.size.y / 33.0)
+	Paginas = floori(float(ImagensValidas.size()) / float(itens_cabiveis))
+	PaginaAtual = clampi(pagina,0,Paginas)
 	var contagem: int = 0
-	var indice_atual: int = pagina * itens_cabiveis
-	while contagem < min(itens_cabiveis,ImagensValidas.size()):
+	var indice_atual: int = PaginaAtual * itens_cabiveis
+	while contagem < min(itens_cabiveis,ImagensValidas.size() - 1):
 		var novo_item: CItemImagem = ItemImagem.instantiate()
-		var imagem_atual: Array = ImagensValidas[indice_atual]
+		var imagem_atual: Array = ImagensValidas[min(indice_atual,ImagensValidas.size() - 1)]
 		Lista.add_child(novo_item)
 		if Principal.ModoImagem:
 			novo_item.iniciar(imagem_atual[0],Principal.ModoImagem)

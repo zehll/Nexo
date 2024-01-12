@@ -148,8 +148,9 @@ func _selecionar() -> void:
 		if Principal.Imagens[contagem][1].has(Principal.ItemAtual[0]):
 			var deletaveis: Array = [Principal.ItemAtual[0]]
 			for item in _inferiores(Principal.ItemAtual[0]):
-				if Principal.Imagens[contagem][1].has(item):
-					Principal.Imagens[contagem][1].erase(item)
+				for deletavel in deletaveis:
+					if Principal.Imagens[contagem][1].has(deletavel):
+						Principal.Imagens[contagem][1].erase(deletavel)
 			Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
 			Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
 		else:
