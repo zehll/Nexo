@@ -6,7 +6,5 @@ res://Pastas/ItemPasta/ItemPasta.tscn
 res://Botoes/Botoes.tscn
 res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn
 res://ListaDeRotulos/ListaDeRotulos.tscn
-res://ListaDeImagens/ListaDeImagens.gd
-res://ListaDeRotulos/ListaDeRotulos.gd
 res://ListaDeImagens/ListaDeImagens.tscn
-res://ListaDeImagens/ItemImagem/ItemImagem.gd
+res://Botoes/Botoes.gd

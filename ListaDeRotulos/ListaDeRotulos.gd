@@ -133,7 +133,10 @@ func _preencher_pagina(pagina: int) -> void:
 		var novo_rotulo: CItemRotulo = ItemRotulo.instantiate()
 		Lista.add_child(novo_rotulo)
 		if Principal.ModoImagem:
-			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ItemAtual[1].has(rotulo_atual[0]))
+			if Principal.ItemAtual != []:
+				novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ItemAtual[1].has(rotulo_atual[0]))
+			else:
+				novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,true)
 		else:
 			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores)
 		contagem += 1

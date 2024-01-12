@@ -387,10 +387,10 @@ func _concluir_adicionar_rotulo(resposta: Array, erro: int) -> void:
 # ALTERAR VISUALIZAÇÃO
 func _visualizacao(modo: int) -> void:
 	var modo_anterior: int = Principal.Visualizacao
+	Principal.Visualizacao = modo
 	if modo_anterior == 0: _atualizar_cor(VerAmbos,0)
 	elif modo_anterior == 1: _atualizar_cor(VerMarcados,0)
 	elif modo_anterior == 2: _atualizar_cor(VerDesmarcados,0)
-	Principal.Visualizacao = modo
 	if modo == 0: _atualizar_cor(VerAmbos,0)
 	elif modo == 1: _atualizar_cor(VerMarcados,0)
 	elif modo == 2: _atualizar_cor(VerDesmarcados,0)
