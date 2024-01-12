@@ -21,7 +21,7 @@ class_name CListaDeRotulos
 @onready var ItemRotulo: PackedScene = preload("res://ListaDeRotulos/ItemRotulo/ItemRotulo.tscn")
 
 # VARIÁVEIS
-@onready var PosicaoNaJanela: float = 0.7
+@onready var PosicaoNaJanela: float = 0.8
 @onready var RotulosValidos: Array = []
 @onready var Paginas: int = 0
 @onready var PaginaAtual: int = 0

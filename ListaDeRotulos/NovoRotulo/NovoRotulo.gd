@@ -108,6 +108,7 @@ func _digitacao(texto: String) -> void:
 	else:
 		Confirmar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		Confirmar.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	_atualizar_cor(Confirmar,0)
 
 # ATUALIZAR COR
 func _atualizar_cor(botao: Node, estado: int) -> void:

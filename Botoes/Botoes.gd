@@ -162,9 +162,9 @@ func _alterar_janela(modo: int) -> void:
 
 # NOVO
 func _novo(resposta: int, etapa: int) -> void:
-	if Principal.Janelas.get_child_count() > 0:
-		Principal.Janelas.get_children()[0].fechar()
 	if etapa == 0:
+		if Principal.Janelas.get_child_count() > 0:
+			Principal.Janelas.get_children()[0].fechar()
 		if Principal.Arquivo != ""  or Principal.Imagens != [] or Principal.Rotulos != []:
 			var questionar_novo: CPergunta = Pergunta.instantiate()
 			Principal.Janelas.add_child(questionar_novo)
@@ -265,6 +265,7 @@ func _modo() -> void:
 		if Principal.Imagens.size() > 0:
 			Principal.ItemAtual = Principal.Imagens[0]
 			Principal.Exibidor.adicionar(Principal.ItemAtual[0])
+			TextoTitulo.text = Principal.ItemAtual[0].split("/")[-1].split(".")[0]
 	else:
 		IconeModo.texture = TexturaRotulo
 		if Principal.Rotulos.size() > 0:
@@ -272,6 +273,7 @@ func _modo() -> void:
 			for imagem in Principal.Imagens:
 				if imagem[1].has(Principal.ItemAtual[0]):
 					Principal.Exibidor.adicionar(imagem[0])
+			TextoTitulo.text = Principal.ItemAtual[0]
 	Digitacao.text = ""
 	Principal.ListaDeImagens.atualizar("")
 	Principal.ListaDeRotulos.atualizar("")
@@ -285,11 +287,13 @@ func _mover(direcao: int) -> void:
 			if Principal.ModoImagem:
 				Principal.ItemAtual = Principal.Imagens[indice_atual]
 				Principal.Exibidor.adicionar(Principal.ItemAtual[0])
+				Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0].split("/")[-1].split(".")[0]
 			else:
 				Principal.ItemAtual = Principal.Rotulos[indice_atual]
 				for imagem in Principal.Imagens:
 					if imagem[1].has(Principal.ItemAtual[0]):
 						Principal.Exibidor.adicionar(imagem[0])
+				Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0]
 	else:
 		var modo_imagem: bool = Principal.ModoImagem
 		var mais_de_um: bool = false
@@ -325,11 +329,13 @@ func _mover(direcao: int) -> void:
 			if modo_imagem:
 				Principal.ItemAtual = Principal.Imagens[indice_atual]
 				Principal.Exibidor.adicionar(Principal.ItemAtual[0])
+				Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0].split("/")[-1].split(".")[0]
 			else:
 				Principal.ItemAtual = Principal.Rotulos[indice_atual]
 				for imagem in Principal.Imagens:
 					if imagem[1].has(Principal.ItemAtual[0]):
 						Principal.Exibidor.adicionar(imagem[0])
+				Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0]
 
 # ADICIONAR
 func _adicionar(resposta: String, etapa: int) -> void:

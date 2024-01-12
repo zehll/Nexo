@@ -1,4 +1,14 @@
-res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn
+res://Principal/Principal.tscn
 res://Recursos/FonteResposta.tres
 res://Recursos/FontePergunta.tres
+res://Pastas/Pastas.tscn
+res://Pastas/ItemPasta/ItemPasta.tscn
+res://Botoes/Botoes.tscn
+res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn
+res://Botoes/Botoes.gd
 res://ListaDeImagens/ItemImagem/ItemImagem.gd
+res://ListaDeRotulos/ItemRotulo/ItemRotulo.gd
+res://ListaDeRotulos/ListaDeRotulos.tscn
+res://ListaDeImagens/ListaDeImagens.gd
+res://ListaDeRotulos/ListaDeRotulos.gd
+res://ListaDeRotulos/NovoRotulo/NovoRotulo.gd

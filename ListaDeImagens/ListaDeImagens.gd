@@ -21,7 +21,7 @@ class_name CListaDeImagens
 @onready var ItemImagem: PackedScene = preload("res://ListaDeImagens/ItemImagem/ItemImagem.tscn")
 
 # VARIÁVEIS
-@onready var PosicaoNaJanela: float = 0.3
+@onready var PosicaoNaJanela: float = 0.2
 @onready var ImagensValidas: Array = []
 @onready var Paginas: int = 0
 @onready var PaginaAtual: int = 0

@@ -167,9 +167,10 @@ func _selecionar() -> void:
 		if Marcado:
 			Principal.ItemAtual[1].erase(Nome.text)
 			Marcado = false
-			for item in Principal.ItemAtual[1]:
-				if _inferiores().has(item):
-					Principal.ItemAtual[1].erase(item)
+			if Principal.ItemAtual[1] != []:
+				for item in Principal.ItemAtual[1]:
+					if _inferiores().has(item):
+						Principal.ItemAtual[1].erase(item)
 		else:
 			Principal.ItemAtual[1].append(Nome.text)
 			Marcado = true
@@ -189,6 +190,7 @@ func _selecionar() -> void:
 		Principal.Botoes.Digitacao.text = ""
 		Principal.ListaDeImagens.atualizar("")
 		Principal.ListaDeRotulos.atualizar("")
+		Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0]
 
 # APAGAR
 func _apagar(resposta: int, etapa: int) -> void:

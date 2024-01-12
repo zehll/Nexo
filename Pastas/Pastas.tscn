@@ -84,6 +84,7 @@ horizontal_scroll_mode = 3
 [node name="Grade" type="GridContainer" parent="Bordas/Janela/BarraDeRolagem"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/h_separation = 0
 
 [node name="FaixaInferior" type="ColorRect" parent="Bordas"]
 layout_mode = 0

@@ -5,6 +5,7 @@ class_name CItemImagem
 @onready var Principal: CPrincipal
 @onready var Nome: Label = $Nome
 @onready var Apagar: TextureRect = $Apagar
+@onready var Pergunta: PackedScene = preload("res://Pergunta/Pergunta.tscn")
 
 # VARIÁVEIS
 @onready var Arquivo: String
@@ -142,7 +143,8 @@ func _selecionar() -> void:
 		Principal.Botoes.Digitacao.text = ""
 		Principal.ListaDeImagens.atualizar("")
 		Principal.ListaDeRotulos.atualizar("")
-	else:
+		Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0].split("/")[-1].split(".")[0]
+	elif Principal.ItemAtual != []:
 		if Principal.Imagens[contagem][1].has(Principal.ItemAtual[0]):
 			var deletaveis: Array = [Principal.ItemAtual[0]]
 			for item in _inferiores(Principal.ItemAtual[0]):
@@ -193,17 +195,28 @@ func _inferiores_imediatos(grupo: Array):
 
 # APAGAR
 func _apagar(resposta: int, etapa: int) -> void:
-	var indice: int = 0
-	while Principal.Imagens[indice][0] != Arquivo: indice += 1
-	if Principal.ModoImagem and Principal.ItemAtual == Principal.Imagens[indice]:
-		if Principal.Imagens.size() > 1: Principal.Botoes._mover(1)
-		else:
-			Principal.Exibidor.zerar()
-			Principal.ItemAtual = []
-	Principal.Imagens.erase(Principal.Imagens[indice])
-	Principal.Botoes.Digitacao.text = ""
-	Principal.ListaDeImagens.atualizar("")
-	Principal.ListaDeRotulos.atualizar("")
+	if etapa == 0:
+		if Principal.Janelas.get_child_count() > 0:
+			Principal.Janelas.get_children()[0].fechar()
+		var questionar_apagar: CPergunta = Pergunta.instantiate()
+		Principal.Janelas.add_child(questionar_apagar)
+		questionar_apagar.iniciar("Você tem certeza de que deseja apagar a imagem?",["Cancelar","Sim","Não"])
+		questionar_apagar.Resposta.connect(_apagar.bind(1))
+	elif etapa == 1:
+		if resposta == 1:
+			var indice: int = 0
+			while Principal.Imagens[indice][0] != Arquivo: indice += 1
+			if Principal.ModoImagem and Principal.ItemAtual == Principal.Imagens[indice]:
+				if Principal.Imagens.size() > 1: Principal.Botoes._mover(1)
+				else:
+					Principal.Exibidor.zerar()
+					Principal.ItemAtual = []
+					Principal.Botoes.TextoTitulo.text = "Nexo"
+			Principal.Imagens.erase(Principal.Imagens[indice])
+			Principal.Botoes.Digitacao.text = ""
+			Principal.ListaDeImagens.atualizar("")
+			Principal.ListaDeRotulos.atualizar("")
+		Principal.Janelas.get_children()[0].fechar()
 
 # FECHAR
 func fechar() -> void:
