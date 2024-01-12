@@ -1,12 +1,4 @@
-res://Pastas/ItemPasta/ItemPasta.tscn
+res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn
 res://Recursos/FonteResposta.tres
 res://Recursos/FontePergunta.tres
-res://Pastas/Pastas.gd
-res://Principal/Principal.tscn
-res://Pastas/Pastas.tscn
-res://Principal/Mouse.gd
-res://Pastas/ItemPasta/ItemPasta.gd
-res://Botoes/Botoes.tscn
-res://ListaDeImagens/ListaDeImagens.gd
-res://Botoes/Botoes.gd
 res://ListaDeImagens/ItemImagem/ItemImagem.gd

@@ -75,6 +75,7 @@ func _atualizar_tamanho() -> void:
 	var tamanho_da_janela: Vector2 = Vector2(float(get_window().size.x),float(get_window().size.y))
 	self.size = tamanho_da_janela - Vector2(6.0,6.0)
 	Bordas.size = Vector2(0.55 * tamanho_da_janela.x, 0.9 * tamanho_da_janela.y)
+	Bordas.position = Vector2(0.225 * tamanho_da_janela.x,0.05 * tamanho_da_janela.y)
 	Janela.size = Bordas.size - Vector2(6.0,42.0)
 	TextoSuperior.size.x = Janela.size.x
 	FundoDigitacao.size.x = Janela.size.x - 20.0

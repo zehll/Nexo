@@ -2,6 +2,7 @@ extends ColorRect
 class_name CItemImagem
 
 # ELEMENTOS DA CENA
+@onready var Principal: CPrincipal
 @onready var Nome: Label = $Nome
 @onready var Apagar: TextureRect = $Apagar
 
@@ -12,6 +13,7 @@ class_name CItemImagem
 
 # INICIAR
 func iniciar(arquivo: String, modo_imagem: bool, marcado: bool = true) -> void:
+	Principal = Mouse.Principal[0]
 	Arquivo = arquivo
 	ModoImagem = modo_imagem
 	Marcado = marcado
@@ -120,10 +122,88 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 
 # COMPUTAR CLIQUE
 func _clique(botao: Node) -> void:
-	if botao == self:
-		pass
-	elif botao == Apagar:
-		pass
+	if botao == self: _selecionar()
+	elif botao == Apagar: _apagar(0,0)
+
+# SELECIONAR
+func _selecionar() -> void:
+	var contagem: int = 0
+	var resolvido: bool = false
+	while contagem < Principal.Imagens.size() and not resolvido:
+		if Principal.Imagens[contagem][0] == Arquivo:
+			resolvido = true
+		else:
+			contagem += 1
+	if Principal.ModoImagem:
+		Principal.Botoes.UltimosIndices.push_back(contagem)
+		Principal.Exibidor.zerar()
+		Principal.ItemAtual = Principal.Imagens[contagem]
+		Principal.Exibidor.adicionar(Arquivo)
+		Principal.Botoes.Digitacao.text = ""
+		Principal.ListaDeImagens.atualizar("")
+		Principal.ListaDeRotulos.atualizar("")
+	else:
+		if Principal.Imagens[contagem][1].has(Principal.ItemAtual[0]):
+			var deletaveis: Array = [Principal.ItemAtual[0]]
+			for item in _inferiores(Principal.ItemAtual[0]):
+				if Principal.Imagens[contagem][1].has(item):
+					Principal.Imagens[contagem][1].erase(item)
+			Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
+			Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
+		else:
+			Principal.Imagens[contagem][1].append(Principal.ItemAtual[0])
+			var superiores: Array = [Principal.ItemAtual[1]]
+			var item_em_analise: Array = Principal.ItemAtual
+			var superior_imediato: String = item_em_analise[1]
+			while superior_imediato != "Origem":
+				var contagem2: int = -1
+				while item_em_analise[0] != superior_imediato:
+					contagem2 += 1
+					item_em_analise = Principal.Rotulos[contagem2]
+				superior_imediato = item_em_analise[1]
+				superiores.append(superior_imediato)
+			superiores.pop_back()
+			for item in superiores:
+				Principal.Imagens[contagem][1].append(item)
+			Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
+			Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
+
+# REUNIR TODOS OS INFERIORES
+func _inferiores(rotulo: String):
+	var todos_os_inferiores: Array = [rotulo]
+	var inferiores_imediatos: Array = [rotulo]
+	while _inferiores_imediatos(inferiores_imediatos) != null:
+		for item in _inferiores_imediatos(inferiores_imediatos):
+			if not todos_os_inferiores.has(item):
+				todos_os_inferiores.append(item)
+		inferiores_imediatos = _inferiores_imediatos(inferiores_imediatos)
+	todos_os_inferiores.pop_front()
+	if todos_os_inferiores == []: return null
+	else: return todos_os_inferiores
+
+# OBTER TODOS OS INFERIORES IMEDIATOS DE UM CONJUNTO DE RÓTULOS
+func _inferiores_imediatos(grupo: Array):
+	var resposta: Array = []
+	for item in grupo:
+		for rotulo in Principal.Rotulos:
+			if rotulo[1] == item:
+				resposta.append(rotulo[0])
+	if resposta == []: return null
+	else: return resposta
+
+# APAGAR
+func _apagar(resposta: int, etapa: int) -> void:
+	var indice: int = 0
+	while Principal.Imagens[indice][0] != Arquivo: indice += 1
+	if Principal.ModoImagem and Principal.ItemAtual == Principal.Imagens[indice]:
+		if Principal.Imagens.size() > 1: Principal.Botoes._mover(1)
+		else:
+			Principal.Exibidor.zerar()
+			Principal.ItemAtual = []
+	Principal.Imagens.erase(Principal.Imagens[indice])
+	Principal.Botoes.Digitacao.text = ""
+	Principal.ListaDeImagens.atualizar("")
+	Principal.ListaDeRotulos.atualizar("")
 
 # FECHAR
 func fechar() -> void:
