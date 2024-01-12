@@ -128,7 +128,9 @@ func _clique(botao: Node) -> void:
 	elif botao == Esquerda: _mover(0)
 	elif botao == Direita: _mover(1)
 	elif botao == Sorteio: _mover(2)
-	elif botao == Adicionar: _adicionar("",0)
+	elif botao == Adicionar:
+		if Principal.ModoImagem: _adicionar_rotulo([],0)
+		else: _adicionar_imagem("",0)
 	elif botao == VerAmbos: _visualizacao(0)
 	elif botao == VerMarcados: _visualizacao(1)
 	elif botao == VerDesmarcados: _visualizacao(2)
@@ -337,25 +339,16 @@ func _mover(direcao: int) -> void:
 						Principal.Exibidor.adicionar(imagem[0])
 				Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0]
 
-# ADICIONAR
-func _adicionar(resposta: String, etapa: int) -> void:
+# ADICIONAR IMAGEM
+func _adicionar_imagem(resposta: String, etapa: int) -> void:
 	if etapa == 0:
-		if Principal.ModoImagem:
-			if Principal.Janelas.get_child_count() != 0:
-				Principal.Janelas.get_children()[0].fechar()
-			var questionar_novo_rotulo: CNovoRotulo = NovoRotulo.instantiate()
-			Principal.Janelas.add_child(questionar_novo_rotulo)
-			questionar_novo_rotulo.iniciar("",false)
-			questionar_novo_rotulo.Cancelamento.connect(_concluir_adicionar_rotulo.bind(0))
-			questionar_novo_rotulo.NovoRotulo.connect(_concluir_adicionar_rotulo.bind(1))
-		else:
-			if Principal.Janelas.get_child_count() != 0:
-				Principal.Janelas.get_children()[0].fechar()
-			var questionar_nova_imagem: CPastas = Pastas.instantiate()
-			Principal.Janelas.add_child(questionar_nova_imagem)
-			questionar_nova_imagem.iniciar(CPastas.Atividades.NovaImagem)
-			questionar_nova_imagem.NovaImagem.connect(_adicionar.bind(1))
-			questionar_nova_imagem.Cancelar.connect(_adicionar.bind(2))
+		if Principal.Janelas.get_child_count() != 0:
+			Principal.Janelas.get_children()[0].fechar()
+		var questionar_nova_imagem: CPastas = Pastas.instantiate()
+		Principal.Janelas.add_child(questionar_nova_imagem)
+		questionar_nova_imagem.iniciar(CPastas.Atividades.NovaImagem)
+		questionar_nova_imagem.NovaImagem.connect(_adicionar_imagem.bind(1))
+		questionar_nova_imagem.Cancelar.connect(_adicionar_imagem.bind(2))
 	elif etapa == 1:
 		if resposta.right(1) == "/":
 			var leitor: DirAccess = DirAccess.open(resposta)
@@ -367,22 +360,31 @@ func _adicionar(resposta: String, etapa: int) -> void:
 				proximo_item = leitor.get_next()
 		else:
 			Principal.Imagens.append([resposta,[]])
-		Principal.ListaDeImagens.atualizar(Digitacao.text)
-		Principal.ListaDeRotulos.atualizar(Digitacao.text)
 		if Principal.ModoImagem and Principal.ItemAtual == []:
 			Principal.ItemAtual = Principal.Imagens[0]
 			Principal.Exibidor.adicionar(Principal.ItemAtual[0])
+		Principal.ListaDeImagens.atualizar(Digitacao.text)
+		Principal.ListaDeRotulos.atualizar(Digitacao.text)
 		Principal.Janelas.get_children()[0].fechar()
 	elif etapa == 2:
 		Principal.Janelas.get_children()[0].fechar()
 
-# CONCLUIR ADICIONAR RÓTULO
-func _concluir_adicionar_rotulo(resposta: Array, erro: int) -> void:
-	if erro != 0:
+# ADICIONAR RÓTULO
+func _adicionar_rotulo(resposta: Array, etapa: int) -> void:
+	if etapa == 0:
+		if Principal.Janelas.get_child_count() > 0:
+			Principal.Janelas.get_children()[0].fechar()
+		var questionar_novo_rotulo: CNovoRotulo = NovoRotulo.instantiate()
+		Principal.Janelas.add_child(questionar_novo_rotulo)
+		questionar_novo_rotulo.iniciar("")
+		questionar_novo_rotulo.NovoRotulo.connect(_adicionar_rotulo.bind(1))
+		questionar_novo_rotulo.Cancelamento.connect(_adicionar_rotulo.bind(2))
+	elif etapa == 1:
 		Principal.Rotulos.append(resposta)
-		Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
-		Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
-	Principal.Janelas.get_children()[0].fechar()
+		Principal.ListaDeRotulos.atualizar(Digitacao.text)
+		Principal.Janelas.get_children()[0].fechar()
+	elif etapa == 2:
+		Principal.Janelas.get_children()[0].fechar()
 
 # ALTERAR VISUALIZAÇÃO
 func _visualizacao(modo: int) -> void:

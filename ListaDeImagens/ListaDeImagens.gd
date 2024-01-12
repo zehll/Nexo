@@ -120,7 +120,7 @@ func _preencher_pagina(pagina: int) -> void:
 	PaginaAtual = clampi(pagina,0,Paginas)
 	var contagem: int = 0
 	var indice_atual: int = PaginaAtual * itens_cabiveis
-	while contagem < min(itens_cabiveis,ImagensValidas.size() - 1):
+	while contagem <= min(itens_cabiveis,ImagensValidas.size() - 1):
 		var novo_item: CItemImagem = ItemImagem.instantiate()
 		var imagem_atual: Array = ImagensValidas[min(indice_atual,ImagensValidas.size() - 1)]
 		Lista.add_child(novo_item)

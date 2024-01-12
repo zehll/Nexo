@@ -20,25 +20,34 @@ signal Cancelamento(nada: Array)
 @onready var FonteLista: LabelSettings = preload("res://Recursos/FonteResposta.tres")
 
 # VARIÁVEIS
-@onready var Editar: bool = false
 @onready var Grupo: String = "Sem Grupo"
+@onready var NomeOriginal: String = ""
 
 # INICIAR
-func iniciar(grupo: String = "", editar: bool = false) -> void:
+func iniciar(grupo: String = "", nome_original: String = "") -> void:
 	Principal = Mouse.Principal[0]
+	NomeOriginal = nome_original
 	if grupo != "":
-		Grupo = grupo
-		_criar_item(grupo,true)
-		_criar_item("Sem Grupo",false)
+		if nome_original == "":
+			Grupo = grupo
+			_criar_item(grupo,true)
+		else:
+			Digitacao.text = nome_original
+			_digitacao(nome_original)
+			Grupo = grupo
+			_criar_item(grupo,true)
+			_criar_item("Sem Grupo")
+			var inferiores: Array = _inferiores()
+			for rotulo in Principal.Rotulos:
+				if rotulo[0] != grupo and rotulo[0] != nome_original and not inferiores.has(rotulo[0]):
+					_criar_item(rotulo[0])
 	else:
 		_criar_item("Sem Grupo",true)
-	for rotulo in Principal.Rotulos:
-		if rotulo[0] != grupo:
+		for rotulo in Principal.Rotulos:
 			_criar_item(rotulo[0])
 	for item in [self,Cancelar,Confirmar]:
 		item.mouse_entered.connect(Mouse.localizar.bind(item))
 		item.mouse_exited.connect(Mouse.localizar.bind(Mouse))
-	Editar = editar
 	Digitacao.text_changed.connect(_digitacao)
 	Mouse.Saiu.connect(_atualizar_cor.bind(0))
 	Mouse.Entrou.connect(_atualizar_cor.bind(1))
@@ -46,6 +55,29 @@ func iniciar(grupo: String = "", editar: bool = false) -> void:
 	Mouse.CliqueValido.connect(_clique)
 	get_viewport().size_changed.connect(_atualizar_tamanho)
 	_atualizar_tamanho()
+
+# REUNIR TODOS OS INFERIORES
+func _inferiores():
+	var todos_os_inferiores: Array = [NomeOriginal]
+	var inferiores_imediatos: Array = [NomeOriginal]
+	while _inferiores_imediatos(inferiores_imediatos) != null:
+		for item in _inferiores_imediatos(inferiores_imediatos):
+			if not todos_os_inferiores.has(item):
+				todos_os_inferiores.append(item)
+		inferiores_imediatos = _inferiores_imediatos(inferiores_imediatos)
+	todos_os_inferiores.pop_front()
+	if todos_os_inferiores == []: return null
+	else: return todos_os_inferiores
+
+# OBTER TODOS OS INFERIORES IMEDIATOS DE UM CONJUNTO DE RÓTULOS
+func _inferiores_imediatos(grupo: Array):
+	var resposta: Array = []
+	for item in grupo:
+		for rotulo in Principal.Rotulos:
+			if rotulo[1] == item:
+				resposta.append(rotulo[0])
+	if resposta == []: return null
+	else: return resposta
 
 # CRIAR ITEM
 func _criar_item(nome: String, marcado: bool = false) -> void:
@@ -139,10 +171,7 @@ func _clique(botao: Node) -> void:
 	if botao == Confirmar:
 		if Grupo == "Sem Grupo":
 			Grupo = "Origem"
-		if Editar:
-			emit_signal("NovoRotulo",[Digitacao.text,Grupo,0])
-		else:
-			emit_signal("NovoRotulo",[Digitacao.text,Grupo])
+		emit_signal("NovoRotulo",[Digitacao.text,Grupo])
 	elif [self,Cancelar].has(botao):
 		emit_signal("Cancelamento",[])
 	elif Lista.get_children().has(botao):

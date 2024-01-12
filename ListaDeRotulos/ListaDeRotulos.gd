@@ -121,10 +121,11 @@ func _preencher_pagina(pagina: int) -> void:
 	PaginaAtual = clampi(pagina,0,Paginas)
 	var contagem: int = 0
 	var indice_atual: int = PaginaAtual * itens_cabiveis
-	while contagem < min(itens_cabiveis,RotulosValidos.size() - 1):
-		var rotulo_atual: Array = RotulosValidos[min(indice_atual,RotulosValidos.size() - 1)]
+	print(RotulosValidos)
+	while contagem <= min(itens_cabiveis,RotulosValidos.size() - 1):
+		var rotulo_atual: Array = RotulosValidos[clampi(contagem,indice_atual,RotulosValidos.size() - 1)]
 		var todos_os_superiores: Array = []
-		var superior_atual: String = RotulosValidos[min(indice_atual,RotulosValidos.size() - 1)][1]
+		var superior_atual: String = rotulo_atual[1]
 		while superior_atual != "Origem":
 			todos_os_superiores.append(superior_atual)
 			for item in Principal.Rotulos:

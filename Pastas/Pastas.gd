@@ -244,7 +244,7 @@ func _confirmar() -> void:
 	if Atividade == Atividades.Abrir: emit_signal("Abrir",PastaAtual + texto)
 	elif Atividade == Atividades.Salvar: emit_signal("Salvar",PastaAtual + texto)
 	elif Atividade == Atividades.NovaImagem:
-		if texto.right(5) == ".jpeg" or [".png",".jpg"].has(texto.right(4)): emit_signal("NovaImagem",PastaAtual + "/" + texto)
+		if texto.right(5) == ".jpeg" or [".png",".jpg"].has(texto.right(4)): emit_signal("NovaImagem",PastaAtual + texto)
 		else: emit_signal("NovaImagem",PastaAtual + texto + "/")
 
 # FECHAR

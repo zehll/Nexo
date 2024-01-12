@@ -15,6 +15,7 @@ class_name CItemRotulo
 @onready var Superior: String
 @onready var Superiores: Array
 @onready var Marcado: bool
+@onready var Editando: bool = false
 
 # INICIAR
 func iniciar(rotulo: String, superiores: Array, marcado: bool = true) -> void:
@@ -158,12 +159,12 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 func _clique(botao: Node) -> void:
 	if botao == self: _selecionar()
 	elif botao == Apagar: _apagar(0,0)
-	elif botao == Editar: _adicionar_editar([],0,false)
-	elif botao == Adicionar: _adicionar_editar([],0,true)
+	elif botao == Editar: _adicionar_ou_editar([],0,true)
+	elif botao == Adicionar: _adicionar_ou_editar([],0)
 
 # SELECIONAR
 func _selecionar() -> void:
-	if Principal.ModoImagem:
+	if Principal.ModoImagem and Principal.ItemAtual != []:
 		if Marcado:
 			Principal.ItemAtual[1].erase(Nome.text)
 			Marcado = false
@@ -220,43 +221,33 @@ func _apagar(resposta: int, etapa: int) -> void:
 			Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
 		Principal.Janelas.get_children()[0].fechar()
 
-# ADICIONAR OU EDITAR
-func _adicionar_editar(resposta: Array, etapa: int, adicionar: bool = true) -> void:
+# ADICIONAR
+func _adicionar_ou_editar(resposta: Array, etapa: int, editar: bool = false) -> void:
 	if etapa == 0:
-		var adicionar_editar: CNovoRotulo = NovoRotulo.instantiate()
 		if Principal.Janelas.get_child_count() > 0:
 			Principal.Janelas.get_children()[0].fechar()
-		Principal.Janelas.add_child(adicionar_editar)
-		if adicionar:
-			adicionar_editar.iniciar("")
+		var questionar_adicionar: CNovoRotulo = NovoRotulo.instantiate()
+		Principal.Janelas.add_child(questionar_adicionar)
+		if not editar:
+			questionar_adicionar.iniciar(Nome.text)
 		else:
-			adicionar_editar.iniciar(Nome.text,true)
-		adicionar_editar.Cancelamento.connect(_adicionar_editar.bind(1))
-		adicionar_editar.NovoRotulo.connect(_adicionar_editar.bind(2))
+			questionar_adicionar.iniciar(Superior,Nome.text)
+			Editando = true
+		questionar_adicionar.NovoRotulo.connect(_adicionar_ou_editar.bind(1))
+		questionar_adicionar.Cancelamento.connect(_adicionar_ou_editar.bind(2))
 	elif etapa == 1:
-		Principal.Janelas.get_children()[0].fechar()
-	elif etapa == 2:
-		if resposta.size() == 3:
-			for imagem in Principal.Imagens:
-				var contagem: int = 0
-				var resolvido: bool = false
-				while contagem < imagem[1].size() and not resolvido:
-					if imagem[1][contagem] == Nome.text:
-						imagem[1][contagem] = resposta[0]
-						resolvido = true
-					contagem += 1
-			var contagem: int = 0
-			var resolvido: bool = false
-			while contagem < Principal.Rotulos.size() and not resolvido:
-				if Principal.Rotulos[contagem][0] == Nome.text:
-					Principal.Rotulos[contagem] = [resposta[0],resposta[1]]
-					resolvido = true
-				contagem += 1
-		else:
+		if not Editando:
 			Principal.Rotulos.append(resposta)
-		Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
+		else:
+			var indice_do_rotulo: int = 0
+			while Principal.Rotulos[indice_do_rotulo][0] != Nome.text: indice_do_rotulo += 1
+			Principal.Rotulos[indice_do_rotulo] = resposta
 		Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
 		Principal.Janelas.get_children()[0].fechar()
+		Editando = false
+	elif etapa == 2:
+		Principal.Janelas.get_children()[0].fechar()
+		Editando = false
 
 # REUNIR TODOS OS INFERIORES
 func _inferiores():
