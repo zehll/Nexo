@@ -21,3 +21,4 @@ class_name CPrincipal
 func _ready() -> void:
 	Mouse.Principal = [self]
 	Botoes.iniciar()
+	Exibidor.iniciar()

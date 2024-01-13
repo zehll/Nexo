@@ -121,23 +121,25 @@ func _preencher_pagina(pagina: int) -> void:
 	PaginaAtual = clampi(pagina,0,Paginas)
 	var contagem: int = 0
 	var indice_atual: int = PaginaAtual * itens_cabiveis
-	print(RotulosValidos)
 	while contagem <= min(itens_cabiveis,RotulosValidos.size() - 1):
 		var rotulo_atual: Array = RotulosValidos[clampi(contagem,indice_atual,RotulosValidos.size() - 1)]
-		var todos_os_superiores: Array = []
-		var superior_atual: String = rotulo_atual[1]
-		while superior_atual != "Origem":
-			todos_os_superiores.append(superior_atual)
-			for item in Principal.Rotulos:
-				if item[0] == superior_atual:
-					superior_atual = item[1]
+		var superiores: Array = []
+		var superior_em_analise: String = rotulo_atual[1]
+		while superior_em_analise != "Origem":
+			for rotulo in Principal.Rotulos:
+				if rotulo[0] == superior_em_analise:
+					superior_em_analise = rotulo[1]
+					superiores.push_back(superior_em_analise)
+		if rotulo_atual[1] != "Origem":
+			superiores.push_front(rotulo_atual[1])
+		superiores.pop_back()
 		var novo_rotulo: CItemRotulo = ItemRotulo.instantiate()
 		Lista.add_child(novo_rotulo)
 		if Principal.ModoImagem:
 			if Principal.ItemAtual != []:
-				novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,Principal.ItemAtual[1].has(rotulo_atual[0]))
+				novo_rotulo.iniciar(rotulo_atual[0],superiores,Principal.ItemAtual[1].has(rotulo_atual[0]))
 			else:
-				novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores,true)
+				novo_rotulo.iniciar(rotulo_atual[0],superiores,true)
 		else:
-			novo_rotulo.iniciar(rotulo_atual[0],todos_os_superiores)
+			novo_rotulo.iniciar(rotulo_atual[0],superiores)
 		contagem += 1

@@ -37,10 +37,11 @@ func iniciar(grupo: String = "", nome_original: String = "") -> void:
 			Grupo = grupo
 			_criar_item(grupo,true)
 			_criar_item("Sem Grupo")
-			var inferiores: Array = _inferiores()
-			for rotulo in Principal.Rotulos:
-				if rotulo[0] != grupo and rotulo[0] != nome_original and not inferiores.has(rotulo[0]):
-					_criar_item(rotulo[0])
+			var inferiores = _inferiores()
+			if inferiores is Array:
+				for rotulo in Principal.Rotulos:
+					if rotulo[0] != grupo and rotulo[0] != nome_original and not inferiores.has(rotulo[0]):
+						_criar_item(rotulo[0])
 	else:
 		_criar_item("Sem Grupo",true)
 		for rotulo in Principal.Rotulos:

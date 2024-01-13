@@ -8,8 +8,6 @@ class_name CItemRotulo
 @onready var Apagar: TextureRect = $Apagar
 @onready var Editar: TextureRect = $Editar
 @onready var Adicionar: TextureRect = $Adicionar
-@onready var Pergunta: PackedScene = preload("res://Pergunta/Pergunta.tscn")
-@onready var NovoRotulo: PackedScene = preload("res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn")
 
 # VARIÁVEIS
 @onready var Superior: String
@@ -183,20 +181,21 @@ func _selecionar() -> void:
 		_atualizar_cor(Editar,0)
 		_atualizar_cor(Adicionar,0)
 	else:
-		Principal.ItemAtual = [Nome.text,Superior]
-		Principal.Exibidor.zerar()
-		for imagem in Principal.Imagens:
-			if imagem[1].has(Nome.text):
-				Principal.Exibidor.adicionar(imagem[0])
+		if not Principal.ModoImagem:
+			Principal.ItemAtual = [Nome.text,Superior]
+			Principal.Exibidor.zerar()
+			for imagem in Principal.Imagens:
+				if imagem[1].has(Nome.text):
+					Principal.Exibidor.adicionar(imagem[0])
+			Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0]
 		Principal.Botoes.Digitacao.text = ""
 		Principal.ListaDeImagens.atualizar("")
 		Principal.ListaDeRotulos.atualizar("")
-		Principal.Botoes.TextoTitulo.text = Principal.ItemAtual[0]
 
 # APAGAR
 func _apagar(resposta: int, etapa: int) -> void:
 	if etapa == 0:
-		var questionar_apagar: CPergunta = Pergunta.instantiate()
+		var questionar_apagar: CPergunta = load("res://Pergunta/Pergunta.tscn").instantiate()
 		if Principal.Janelas.get_child_count() > 0:
 			Principal.Janelas.get_children()[0].fechar()
 		Principal.Janelas.add_child(questionar_apagar)
@@ -208,15 +207,20 @@ func _apagar(resposta: int, etapa: int) -> void:
 			if not Principal.ModoImagem and (deletaveis.has(Principal.ItemAtual[0]) or deletaveis.has(Principal.ItemAtual[1])):
 				Principal.ItemAtual = []
 				Principal.Exibidor.zerar()
-			for item in _inferiores():
-				deletaveis.append(item)
+			var inferiores = _inferiores()
+			if inferiores is Array:
+				for item in _inferiores():
+					deletaveis.append(item)
 			for imagem in Principal.Imagens:
-				for rotulo in imagem[1]:
-					if deletaveis.has(rotulo):
-						imagem[1].erase(rotulo)
-			for rotulo in Principal.Rotulos:
-				if deletaveis.has(rotulo[0]):
-					Principal.Rotulos.erase(rotulo)
+				for deletavel in deletaveis:
+					if imagem[1].has(deletavel):
+						imagem.erase(deletavel)
+			var contagem: int = 0
+			while contagem < Principal.Rotulos.size():
+				if deletaveis.has(Principal.Rotulos[contagem][0]):
+					Principal.Rotulos.remove_at(contagem)
+				else:
+					contagem += 1
 			Principal.ListaDeImagens.atualizar(Principal.Botoes.Digitacao.text)
 			Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
 		Principal.Janelas.get_children()[0].fechar()
@@ -226,7 +230,7 @@ func _adicionar_ou_editar(resposta: Array, etapa: int, editar: bool = false) -> 
 	if etapa == 0:
 		if Principal.Janelas.get_child_count() > 0:
 			Principal.Janelas.get_children()[0].fechar()
-		var questionar_adicionar: CNovoRotulo = NovoRotulo.instantiate()
+		var questionar_adicionar: CNovoRotulo = load("res://ListaDeRotulos/NovoRotulo/NovoRotulo.tscn").instantiate()
 		Principal.Janelas.add_child(questionar_adicionar)
 		if not editar:
 			questionar_adicionar.iniciar(Nome.text)

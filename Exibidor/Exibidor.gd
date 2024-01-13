@@ -2,6 +2,7 @@ extends Control
 class_name CExibidor
 
 # ELEMENTOS DA CENA
+@onready var Principal: CPrincipal
 @onready var Origem: Marker2D = $Origem
 @onready var Tabela: GridContainer = $Origem/Tabela
 @onready var ItemEmExibicao: PackedScene = preload("res://Exibidor/ItemEmExibicao/ItemEmExibicao.tscn")
@@ -24,6 +25,8 @@ func _ready() -> void:
 	self.mouse_entered.connect(Mouse.localizar.bind(self))
 	self.mouse_exited.connect(Mouse.localizar.bind(Mouse))
 	get_viewport().size_changed.connect(_atualizar_tamanho)
+func iniciar() -> void:
+	Principal = Mouse.Principal[0]
 
 # ATUALIZAR TAMANHO
 func _atualizar_tamanho() -> void:
@@ -85,6 +88,7 @@ func _zoom(intensidade: float, delta: float) -> void:
 		var movimentacao: float = ZoomNormalizado * VelocidadeDoZoom * delta
 		if movimentacao >= 0.0:
 			Origem.scale += Vector2(movimentacao, movimentacao)
+			Principal.Botoes.Zoom.text = str(roundi(Origem.scale.x * 100.0)) + "%"
 		else:
 			var escala_pretendida: Vector2 = Origem.scale + Vector2(movimentacao, movimentacao)
 			var limite_superior: bool = Origem.global_position.y - ((Tamanho.y * escala_pretendida.y) / 2.0) < self.size.y - 30.0
@@ -93,6 +97,7 @@ func _zoom(intensidade: float, delta: float) -> void:
 			var limite_direito: bool = Origem.global_position.x + ((Tamanho.x * escala_pretendida.x) / 2.0) > 30.0
 			if limite_superior and limite_inferior and limite_esquerdo and limite_direito:
 				Origem.scale = Vector2(max(0.05,escala_pretendida.x),max(0.05,escala_pretendida.y))
+				Principal.Botoes.Zoom.text = str(roundi(Origem.scale.x * 100.0)) + "%"
 			else: ZoomNormalizado = 0.0
 
 # ADICIONAR

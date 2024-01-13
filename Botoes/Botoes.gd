@@ -268,6 +268,10 @@ func _modo() -> void:
 			Principal.ItemAtual = Principal.Imagens[0]
 			Principal.Exibidor.adicionar(Principal.ItemAtual[0])
 			TextoTitulo.text = Principal.ItemAtual[0].split("/")[-1].split(".")[0]
+		else:
+			Principal.ItemAtual = []
+			Principal.Exibidor.zerar()
+			TextoTitulo.text = "Nexo"
 	else:
 		IconeModo.texture = TexturaRotulo
 		if Principal.Rotulos.size() > 0:
@@ -276,6 +280,10 @@ func _modo() -> void:
 				if imagem[1].has(Principal.ItemAtual[0]):
 					Principal.Exibidor.adicionar(imagem[0])
 			TextoTitulo.text = Principal.ItemAtual[0]
+		else:
+			Principal.ItemAtual = []
+			Principal.Exibidor.zerar()
+			TextoTitulo.text = "Nexo"
 	Digitacao.text = ""
 	Principal.ListaDeImagens.atualizar("")
 	Principal.ListaDeRotulos.atualizar("")
