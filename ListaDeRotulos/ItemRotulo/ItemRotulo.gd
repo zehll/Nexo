@@ -131,7 +131,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 					Subtitulo.self_modulate = Color(0.0,0.45,0.0,1.0)
 					botao.self_modulate = Color(0.0,0.25,0.0,1.0)
 				else:
-					self.color = Color(0.5,0.0,0.0,1.0)
+					self.color = Color(0.05,0.0,0.0,1.0)
 					Nome.self_modulate = Color(0.55,0.0,0.0,1.0)
 					Subtitulo.self_modulate = Color(0.45,0.0,0.0,1.0)
 					botao.self_modulate = Color(0.25,0.0,0.0,1.0)
@@ -148,7 +148,7 @@ func _atualizar_cor(botao: Node, estado: int) -> void:
 					Subtitulo.self_modulate = Color(0.0,0.45,0.0,1.0)
 					botao.self_modulate = Color(0.0,0.3,0.0,1.0)
 				else:
-					self.color = Color(0.5,0.0,0.0,1.0)
+					self.color = Color(0.05,0.0,0.0,1.0)
 					Nome.self_modulate = Color(0.55,0.0,0.0,1.0)
 					Subtitulo.self_modulate = Color(0.45,0.0,0.0,1.0)
 					botao.self_modulate = Color(0.3,0.0,0.0,1.0)
@@ -168,18 +168,16 @@ func _selecionar() -> void:
 			Marcado = false
 			if Principal.ItemAtual[1] != []:
 				for item in Principal.ItemAtual[1]:
-					if _inferiores().has(item):
-						Principal.ItemAtual[1].erase(item)
+					if _inferiores() != null:
+						if _inferiores().has(item):
+							Principal.ItemAtual[1].erase(item)
 		else:
 			Principal.ItemAtual[1].append(Nome.text)
 			Marcado = true
 			for item in Superiores:
 				if not Principal.ItemAtual[1].has(item):
 					Principal.ItemAtual[1].append(item)
-		_atualizar_cor(self,0)
-		_atualizar_cor(Apagar,0)
-		_atualizar_cor(Editar,0)
-		_atualizar_cor(Adicionar,0)
+		Principal.ListaDeRotulos.atualizar(Principal.Botoes.Digitacao.text)
 	else:
 		if not Principal.ModoImagem:
 			Principal.ItemAtual = [Nome.text,Superior]

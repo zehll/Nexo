@@ -101,16 +101,7 @@ func _zoom(intensidade: float, delta: float) -> void:
 			else: ZoomNormalizado = 0.0
 
 # ADICIONAR
-func adicionar(arquivo: String, resetar: bool = false) -> void:
-	if resetar:
-		for item in Tabela.get_children():
-			Tabela.remove_child(item)
-			item.queue_free()
-		Tabela.columns = 1
-	else:
-		for item in Tabela.get_children():
-			if item.Arquivo == arquivo:
-				return
+func adicionar(arquivo: String) -> void:
 	var base: Image = Image.load_from_file(arquivo)
 	var textura: ImageTexture = ImageTexture.create_from_image(base)
 	var tamanho_da_imagem: Vector2 = Vector2(float(base.get_size().x),float(base.get_size().y))

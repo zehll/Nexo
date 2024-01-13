@@ -18,7 +18,6 @@ class_name CListaDeRotulos
 @onready var IconeDireitaDois: TextureRect = $DireitaDois/Icone
 @onready var DireitaTres: ColorRect = $DireitaTres
 @onready var IconeDireitaTres: TextureRect = $DireitaTres/Icone
-@onready var ItemRotulo: PackedScene = preload("res://ListaDeRotulos/ItemRotulo/ItemRotulo.tscn")
 
 # VARIÁVEIS
 @onready var PosicaoNaJanela: float = 0.8
@@ -133,7 +132,7 @@ func _preencher_pagina(pagina: int) -> void:
 		if rotulo_atual[1] != "Origem":
 			superiores.push_front(rotulo_atual[1])
 		superiores.pop_back()
-		var novo_rotulo: CItemRotulo = ItemRotulo.instantiate()
+		var novo_rotulo: CItemRotulo = load("res://ListaDeRotulos/ItemRotulo/ItemRotulo.tscn").instantiate()
 		Lista.add_child(novo_rotulo)
 		if Principal.ModoImagem:
 			if Principal.ItemAtual != []:
